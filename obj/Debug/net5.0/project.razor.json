@@ -15639,6 +15639,16 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\sampleProjects\\MyProj\\Views\\Hello\\Add.cshtml",
+      "TargetPath": "Views\\Hello\\Add.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\sampleProjects\\MyProj\\Views\\Hello\\Update.cshtml",
+      "TargetPath": "Views\\Hello\\Update.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\sampleProjects\\MyProj\\Views\\Shared\\Error.cshtml",
       "TargetPath": "Views\\Shared\\Error.cshtml",
       "FileKind": "mvc"

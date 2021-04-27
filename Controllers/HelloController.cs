@@ -19,5 +19,13 @@ namespace MyProj.Controllers
         public IActionResult List() {
             return View(this._context.Book);
         }
+
+        public IActionResult Add() {
+            return View(this._context.Book);
+        }
+
+         public IActionResult Update() {
+            return View(this._context.Book);
+        }
     }
 }

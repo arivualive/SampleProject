@@ -37,6 +37,7 @@ C:\sampleProjects\MyProj\obj\Debug\net5.0\scopedcss\bundle\MyProj.styles.css
 C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.TagHelpers.input.cache
 C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.TagHelpers.output.cache
 C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.RazorCoreGenerate.cache
+C:\sampleProjects\MyProj\obj\Debug\net5.0\Razor\Views\Hello\Add.cshtml.g.cs
 C:\sampleProjects\MyProj\obj\Debug\net5.0\Razor\Views\Hello\List.cshtml.g.cs
 C:\sampleProjects\MyProj\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
 C:\sampleProjects\MyProj\obj\Debug\net5.0\Razor\Views\Home\Privacy.cshtml.g.cs
@@ -53,3 +54,4 @@ C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.dll
 C:\sampleProjects\MyProj\obj\Debug\net5.0\ref\MyProj.dll
 C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.pdb
 C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.genruntimeconfig.cache
+C:\sampleProjects\MyProj\obj\Debug\net5.0\Razor\Views\Hello\Update.cshtml.g.cs

@@ -4751,11 +4751,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\SampleProjects\\MyProj\\MyProj.csproj",
+      "projectUniqueName": "C:\\sampleProjects\\MyProj\\MyProj.csproj",
       "projectName": "MyProj",
-      "projectPath": "C:\\SampleProjects\\MyProj\\MyProj.csproj",
+      "projectPath": "C:\\sampleProjects\\MyProj\\MyProj.csproj",
       "packagesPath": "C:\\Users\\tpe-744477\\.nuget\\packages\\",
-      "outputPath": "C:\\SampleProjects\\MyProj\\obj\\",
+      "outputPath": "C:\\sampleProjects\\MyProj\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\tpe-744477\\AppData\\Roaming\\NuGet\\NuGet.Config"

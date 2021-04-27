@@ -6,15 +6,24 @@
 
 <h2>List</h2>
 
-<table>
+
+<table class="table" style="margin-top:60px">
+  <thead>
     <tr>
-        <td>Title</td>
-        <td>Price</td>
+      <th scope="col">#</th>
+      <th scope="col">Title</th>
+      <th scope="col">Price</th>
+      <th scope="col">Edit</th>
     </tr>
-    @foreach(var item in Model) {
-        <tr>
-            <td>@item.Title</td>
-            <td>@item.Price</td>
-        </tr>
+  </thead>
+  <tbody>
+      @foreach(var item in Model) {
+    <tr>
+      <td>@item.Id</td>
+      <td>@item.Title</td>
+      <td>@item.Price</td>
+      <td><a href="">Update</a><a style="margin-left:4px" href="">Delete</a></td>
+    </tr>
     }
+  </tbody>
 </table>
