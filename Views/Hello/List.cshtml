@@ -1,0 +1,20 @@
+@model IEnumerable<MyProj.Models.Book>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h2>List</h2>
+
+<table>
+    <tr>
+        <td>Title</td>
+        <td>Price</td>
+    </tr>
+    @foreach(var item in Model) {
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.Price</td>
+        </tr>
+    }
+</table>
