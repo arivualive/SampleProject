@@ -1,3 +1,12 @@
+C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.csprojAssemblyReference.cache
+C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.GeneratedMSBuildEditorConfig.editorconfig
+C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.AssemblyInfoInputs.cache
+C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.AssemblyInfo.cs
+C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.csproj.CoreCompileInputs.cache
+C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.MvcApplicationPartsAssemblyInfo.cache
+C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.RazorAssemblyInfo.cache
+C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.RazorAssemblyInfo.cs
+C:\sampleProjects\MyProj\obj\Debug\net5.0\EFCoreNpgsqlNetTopologySuite.cs
 C:\sampleProjects\MyProj\bin\Debug\net5.0\appsettings.Development.json
 C:\sampleProjects\MyProj\bin\Debug\net5.0\appsettings.json
 C:\sampleProjects\MyProj\bin\Debug\net5.0\MyProj.exe
@@ -22,15 +31,6 @@ C:\sampleProjects\MyProj\bin\Debug\net5.0\Npgsql.EntityFrameworkCore.PostgreSQL.
 C:\sampleProjects\MyProj\bin\Debug\net5.0\Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite.dll
 C:\sampleProjects\MyProj\bin\Debug\net5.0\Npgsql.NetTopologySuite.dll
 C:\sampleProjects\MyProj\bin\Debug\net5.0\System.Diagnostics.DiagnosticSource.dll
-C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.csprojAssemblyReference.cache
-C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.GeneratedMSBuildEditorConfig.editorconfig
-C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.AssemblyInfoInputs.cache
-C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.AssemblyInfo.cs
-C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.csproj.CoreCompileInputs.cache
-C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.MvcApplicationPartsAssemblyInfo.cache
-C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.RazorAssemblyInfo.cache
-C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.RazorAssemblyInfo.cs
-C:\sampleProjects\MyProj\obj\Debug\net5.0\EFCoreNpgsqlNetTopologySuite.cs
 C:\sampleProjects\MyProj\obj\Debug\net5.0\staticwebassets\MyProj.StaticWebAssets.Manifest.cache
 C:\sampleProjects\MyProj\obj\Debug\net5.0\staticwebassets\MyProj.StaticWebAssets.xml
 C:\sampleProjects\MyProj\obj\Debug\net5.0\scopedcss\bundle\MyProj.styles.css
@@ -39,6 +39,7 @@ C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.TagHelpers.output.cache
 C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.RazorCoreGenerate.cache
 C:\sampleProjects\MyProj\obj\Debug\net5.0\Razor\Views\Hello\Add.cshtml.g.cs
 C:\sampleProjects\MyProj\obj\Debug\net5.0\Razor\Views\Hello\List.cshtml.g.cs
+C:\sampleProjects\MyProj\obj\Debug\net5.0\Razor\Views\Hello\Update.cshtml.g.cs
 C:\sampleProjects\MyProj\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
 C:\sampleProjects\MyProj\obj\Debug\net5.0\Razor\Views\Home\Privacy.cshtml.g.cs
 C:\sampleProjects\MyProj\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
@@ -54,4 +55,3 @@ C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.dll
 C:\sampleProjects\MyProj\obj\Debug\net5.0\ref\MyProj.dll
 C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.pdb
 C:\sampleProjects\MyProj\obj\Debug\net5.0\MyProj.genruntimeconfig.cache
-C:\sampleProjects\MyProj\obj\Debug\net5.0\Razor\Views\Hello\Update.cshtml.g.cs

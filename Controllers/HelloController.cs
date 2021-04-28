@@ -16,6 +16,23 @@ namespace MyProj.Controllers
             this._context = context;
         }
 
+        // MyContext db = new MyContext();
+
+        // public IActionResult List()
+        // {
+        //     return View(db.Book.ToList());
+        // }
+
+        // public IActionResult Add()
+        // {
+        //     return View();
+        // }
+
+        // public IActionResult Update()
+        // {
+        //     return View();
+        // }
+
         public IActionResult List() {
             return View(this._context.Book);
         }
