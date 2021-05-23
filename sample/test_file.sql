@@ -1,12 +1,13 @@
-SELECT 
+( SELECT 
 od.acpt_dt_tm AS ORDER_DT							
 od.cust_no	AS KAINNO						
 nm.cust_name AS KAIN_NAME							
 ij.net_ij_cd AS NET_IJ_CD
 --login_status							
-mbr_kbn AS KAIN_KBN						
+od.mbr_kbn AS KAIN_KBN	
+
 --odr_form
-od.gift_flg	
+od.gift_flg	AS GIFT_FLG
 rb.regular_buy_odr_seq AS REGULAR_ORDER_ID
 od.item_kbn AS SHOHIN_TYPE
 ac.odr_kbn AS ORDER_KBN
@@ -23,10 +24,8 @@ nm.mail_adr AS EMAIL
 od.site_kbn AS SITE_KBN
 od.route_dtl_kbn						
 od.login_cd AS NETMEMBER_ID							
-						
-cosme_flag							
-herbf_lag
 
+						
 od.credit_card_no AS CC_NO							
 od.avail_term AS CC_TERM				
 rb.credit_card_name	AS CC_NAME						
@@ -36,17 +35,13 @@ oddi.acpt_dt_tm	AS ORDER_DT
 oddi.credit_card_no AS CC_NO						
 oddi.avail_term	AS CC_TERM						
 credit_card_name AS CC_NAME							
-change_mbr_cd							
-change_mbr_pwd							
-trade_cd							
-trade_pwd							
-order_cd							
-epay_account_cd							
+ci.mbr_cd AS CHNG_HIST_KAIIN_ID						
+cichange_mbr_pwd AS CHNG_HIST_KAIIN_PASS						
+pay.trade_cd AS ACCESS_ID							
+pay.trade_pwd AS ACCESS_PASS							
+pay.order_cd AS ORDER_ID							
+pay.e_pay_account_cd AS EPAYMENT_ID							
 
-			
-
-SELECT  FROM
-f_odr od
 INNER JOIN m_net_mbr nm
  ON od.cust_no=nm.mbr_seq
 LEFT JOIN m_net_ij_rsn ij
@@ -70,7 +65,107 @@ LEFT JOIN f_regular_buy_odr_info_dtl_record rbd
 LEFT JOIN m_offline_data of
  ON rb.cust_no=of.cust_no
 LEFT JOIN f_odr_direct oddi
- ON od.odr_seq=oddi.odr_seq
+ ON od.odr_seq=oddi.odr_seq 
+ ORDER BY od.acpt_dt_tm DESC ) AS A
+
+
+(b.cosme_flag AS COSME_FLAG						
+b.herb_flag	AS HERB_FLAG) AS B
+
+SELECT
+a.acpt_dt_tm AS ORDER_DT							
+a.cust_no	AS KAINNO						
+a.cust_name AS KAIN_NAME							
+a.net_ij_cd AS NET_IJ_CD
+AS REGIST_USER
+--login_status							
+a.mbr_kbn AS KAIN_KBN	
+
+--odr_form
+a.gift_flg	AS GIFT_FLG
+a.regular_buy_odr_seq AS REGULAR_ORDER_ID
+a.item_kbn AS SHOHIN_TYPE
+a.odr_kbn AS ORDER_KBN
+a.net_ij_rsn AS NET_IJ_INFO							
+a.odr_stat_kbn AS ORDER_STATUS							
+--host_kbn
+a.host_kbn	AS HOST_FLG						
+a.rcv_form_output_kbn	AS PRINT_FLG						
+--odr_kbn							
+a.upd_kbn AS CHANGE_KBN							
+a.tel_no AS TEL_NO						
+a.mail_adr AS EMAIL 						
+--site_kbn
+a.site_kbn AS SITE_KBN
+a.route_dtl_kbn						
+a.login_cd AS NETMEMBER_ID							
+
+b.cosme_flag AS COSME_FLAG						
+b.herb_flag	AS HERB_FLAG
+						
+a.credit_card_no AS CC_NO							
+a.avail_term AS CC_TERM				
+a.credit_card_name	AS CC_NAME						
+a.mbr_cd AS KAIIN_ID						
+a.mbr_pwd AS KAIIN_PASS						
+a.acpt_dt_tm	AS ORDER_DT			
+a.credit_card_no AS CC_NO						
+a.avail_term	AS CC_TERM						
+a.credit_card_name AS CC_NAME							
+a.mbr_cd AS CHNG_HIST_KAIIN_ID						
+a.mbr_pwd AS CHNG_HIST_KAIIN_PASS						
+a.trade_cd AS ACCESS_ID							
+a.trade_pwd AS ACCESS_PASS							
+a.order_cd AS ORDER_ID							
+a.e_pay_account_cd AS EPAYMENT_ID
+
+WHERE
+
+A.delete_flg != 1
+
+A.order_dt >= to_timestamp('$ymdh', 'yyyymmddhh24miss')
+
+A.order_dt <= to_timestamp('$ymdh', 'yyyymmddhh24miss')
+
+A.cust_no like 
+
+A.cust_name LIKE 
+
+A.tel_no = 
+
+a.mail_adr LIKE 
+}
+
+A.注文区分 IN (状況（検索条件）)
+
+A.変更区分=注文状態指定（検索条件）
+
+--Site_kbn
+A.site_kbn = '1' AND A.route_dtl_kbn <> '03')
+A.site_kbn = '2'
+(A.site_kbn != '2' AND A.route_dtl_kbn = '03')
+
+--net_ij_kbn
+A.net_ij_cd=0000 OR A.net_ij_cd IS NULL
+A.net_ij_cd !=0000 OR A.net_ij_cd IS NOT NULL
+
+
+B.cosme_flag = 1 and B.herb_flag = 0
+B.herb_flag = 1 and B.cosme_flag = 0
+
+--Login Status
+A.mbr_kbn = 2
+A.mbr_kbn IN (0,1) and A.odr_kbn=1 and A.item_kbn=1
+A.login_cd = 
+
+--odr_form
+A.gift_flg = 0
+A.gift_flg = 1
+(ro.regular_buy_odr_seq != '' AND ro.shohin_type=1 AND h.order_kbn=2)
+(a.gift_flg = '0' AND ro.regular_buy_odr_seq != '' AND ro.shohin_type=1 AND h.order_kbn=2)
+	
+REGIST_USER
+
 
 
 SELECT
