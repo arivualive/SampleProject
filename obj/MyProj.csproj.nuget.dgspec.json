@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "c:\\SampleProject\\MyProj\\MyProj.csproj": {}
+    "c:\\sampleProjects\\MyProj\\MyProj.csproj": {}
   },
   "projects": {
-    "c:\\SampleProject\\MyProj\\MyProj.csproj": {
+    "c:\\sampleProjects\\MyProj\\MyProj.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\SampleProject\\MyProj\\MyProj.csproj",
+        "projectUniqueName": "c:\\sampleProjects\\MyProj\\MyProj.csproj",
         "projectName": "MyProj",
-        "projectPath": "c:\\SampleProject\\MyProj\\MyProj.csproj",
-        "packagesPath": "C:\\Users\\Arivazhagan\\.nuget\\packages\\",
-        "outputPath": "c:\\SampleProject\\MyProj\\obj\\",
+        "projectPath": "c:\\sampleProjects\\MyProj\\MyProj.csproj",
+        "packagesPath": "C:\\Users\\tpe-744477\\.nuget\\packages\\",
+        "outputPath": "c:\\sampleProjects\\MyProj\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Arivazhagan\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\tpe-744477\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -65,7 +65,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }
