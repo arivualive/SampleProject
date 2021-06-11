@@ -3,15 +3,15 @@ SELECT
     A.acpt_dt_tm AS ORDER_DT,
     A.cust_no AS KAINNO,
     A.cust_name AS KAIN_NAME,
-    A.net_ij_cd AS NET_IJ_CD,
+    A.net_ju_cd AS NET_IJ_CD,
     A.mbr_kbn AS KAIN_KBN,
     A.gift_flg AS GIFT_FLG,
     A.regular_buy_odr_seq AS REGULAR_ORDER_ID,
     A.item_kbn AS SHOHIN_TYPE,
     A.odr_kbn AS ORDER_KBN,
-    A.net_ij_rsn AS NET_IJ_INFO,
+    A.net_ju_rsn AS NET_IJ_INFO,
     A.odr_stat_kbn AS ORDER_STATUS,
-    A.host_kbn AS HOST_FLG,
+    A.core_sys_kbn AS HOST_FLG,
     A.rcv_form_output_kbn AS PRINT_FLG,
     A.upd_kbn AS CHANGE_KBN,
     A.tel_no AS TEL_NO,
@@ -22,14 +22,14 @@ SELECT
     A.credit_card_no AS CC_NO,
     A.avail_term AS CC_TERM,
     A.credit_card_name AS CC_NAME,
-    A.hist_seq AS REGIST_HISTORY_ID
+    A.hist_seq AS REGIST_HISTORY_ID,
     A.mbr_cd AS KAIIN_ID,
     A.mbr_pwd AS KAIIN_PASS,
     A.chng_order_dt AS CHNG_ORDER_DT,
     A.chng_card_no AS CHNG_HIST_CC_NO,
     A.chng_avail_term AS CHNG_HIST_CC_TERM,
     A.chng_card_name AS CHNG_HIST_CC_NAME,
-    A.chng_hist_seq AS CHNG_HIST_REGIST_HISTORY_ID
+    A.chng_hist_seq AS CHNG_HIST_REGIST_HISTORY_ID,
     A.chng_mbr_cd AS CHNG_HIST_KAIIN_ID,
     A.chng_mbr_pwd AS CHNG_HIST_KAIIN_PASS,
     A.trade_cd AS ACCESS_ID,
@@ -45,15 +45,15 @@ FROM
             od.acpt_dt_tm,
             od.cust_no,
             nm.cust_name,
-            ij.net_ij_cd,
+            ij.net_ju_cd,
             od.mbr_kbn,
             od.gift_flg,
             rb.regular_buy_odr_seq,
             odd.item_kbn,
             ac.odr_kbn,
-            ij.net_ij_rsn,
+            ij.net_ju_rsn,
             od.odr_stat_kbn,
-            od.host_kbn,
+            od.core_sys_kbn,
             od.rcv_form_output_kbn,
             odu.upd_kbn,
             od.tel_no,
@@ -71,7 +71,7 @@ FROM
             odu.credit_card_no AS chng_card_no,
             odu.avail_term AS chng_avail_term,
             odu.credit_card_name AS chng_card_name,
-            ci.hist_seq AS chng_hist_seq
+            ci.hist_seq AS chng_hist_seq,
             ci.mbr_cd AS chng_mbr_cd,
             ci.mbr_pwd AS chng_mbr_pwd,
             pay.trade_cd,
@@ -81,9 +81,9 @@ FROM
         FROM
             f_odr od 
             INNER JOIN m_net_mbr nm 
-                ON od.cust_no = nm.mbr_seq 
-            LEFT JOIN m_net_ij_rsn ij 
-                ON od.pend_cd = ij.net_ij_cd 
+                ON od.cust_no = nm.cust_no 
+            LEFT JOIN m_net_ju_rsn ij 
+                ON od.pend_cd = ij.net_ju_cd 
             LEFT JOIN h_approval_card_input ac 
                 ON od.odr_seq = ac.odr_no 
             LEFT JOIN h_card_input ci 
@@ -587,7 +587,7 @@ ORDER_ID,
 CLR_CORP_CD,
 TRANSACTION_ID,
 to_number(STFUNC_SSK_DEC(KAIIN_ID)),
-KAIIN_PASS,
+STFUNC_SSK_DEC(KAIIN_PASS),
 FORWARD,
 CARD_SEQ,
 MESSAGE_CD,
@@ -844,7 +844,7 @@ CLR_CORP_CD,
 TRAN_DATE,
 STFUNC_SSK_DEC(ACCESS_ID),
 STFUNC_SSK_DEC(ACCESS_PASS),
-STFUNC_SSK_DEC(ORDER_ID),
+ORDER_ID,
 STFUNC_SSK_DEC(EPAYMENT_ID),
 UPDATE_DT,
 UPDATE_USER,
@@ -1043,3 +1043,173 @@ LEFT JOIN PROMOACCUMLATEPURCHASE_TBL PAP
 ON  PA.PROMO_ACC_ID = PAP.PROMO_ACC_ID
 
 
+SELECT 
+EPAYMENTHISTORY_ID,
+ORDER_KBN,
+RECV_ORDER_ID,
+CLR_CORP_CD,
+TRAN_DATE,
+ACCESS_ID,
+ACCESS_PASS,
+ORDER_ID,
+EPAYMENT_ID,
+UPDATE_DT,
+UPDATE_USER,
+REGIST_DT,
+REGIST_USER
+FROM SSKADMINUSER.EPAYMENTHISTORY_TBL
+
+$sql  = " SELECT";
+    $sql .= " A.odr_seq AS ORDER_SEQ,";
+    $sql .= " A.acpt_dt_tm AS ORDER_DT,";
+    $sql .= " A.cust_no AS KAINNO,";
+    $sql .= " A.cust_name AS KAIN_NAME,";
+    $sql .= " A.net_ju_cd AS NET_IJ_CD,";
+    $sql .= " A.mbr_kbn AS KAIN_KBN,";
+    $sql .= " A.gift_flg AS GIFT_FLG,";
+    $sql .= " A.regular_buy_odr_seq AS REGULAR_ORDER_ID,";
+    $sql .= " A.item_kbn AS SHOHIN_TYPE,";
+    $sql .= " A.odr_kbn AS ORDER_KBN,";
+    $sql .= " A.net_ju_rsn AS NET_IJ_INFO,";
+    $sql .= " A.odr_stat_kbn AS ORDER_STATUS,";
+    $sql .= " A.core_sys_kbn AS HOST_FLG,";
+    $sql .= " A.rcv_form_output_kbn AS PRINT_FLG,";
+    $sql .= " A.upd_kbn AS CHANGE_KBN,";
+    $sql .= " A.tel_no AS TEL_NO,";
+    $sql .= " A.mail_adr AS EMAIL,";
+    $sql .= " A.site_kbn AS SITE_KBN,";
+    $sql .= " A.route_dtl_kbn AS ODRROUTEDTLKBN,";
+    $sql .= " A.login_cd AS NETMEMBER_ID,";
+    $sql .= " A.credit_card_no AS CC_NO,";
+    $sql .= " A.avail_term AS CC_TERM,";
+    $sql .= " A.credit_card_name AS CC_NAME,";
+    $sql .= " A.hist_seq AS REGIST_HISTORY_ID,";
+    $sql .= " A.mbr_cd AS KAIIN_ID,";
+    $sql .= " A.mbr_pwd AS KAIIN_PASS,";
+    $sql .= " A.chng_order_dt AS CHNG_ORDER_DT,";
+    $sql .= " A.chng_card_no AS CHNG_HIST_CC_NO,";
+    $sql .= " A.chng_avail_term AS CHNG_HIST_CC_TERM,";
+    $sql .= " A.chng_card_name AS CHNG_HIST_CC_NAME,";
+    $sql .= " A.chng_hist_seq AS CHNG_HIST_REGIST_HISTORY_ID,";
+    $sql .= " A.chng_mbr_cd AS CHNG_HIST_KAIIN_ID,";
+    $sql .= " A.chng_mbr_pwd AS CHNG_HIST_KAIIN_PASS,";
+    $sql .= " A.trade_cd AS ACCESS_ID,";
+    $sql .= " A.trade_pwd AS ACCESS_PASS,";
+    $sql .= " A.order_cd AS ORDER_ID,";
+    $sql .= " A.e_pay_account_cd AS EPAYMENT_ID,";
+    $sql .= " A.del_flg AS DELETE_FLAG,";
+    $sql .= " B.cosme_flag AS COSME_FLAG,";
+    $sql .= " B.herb_flag AS HERB_FLAG ";
+$sql .= " FROM";
+    $sql .= " ( ";
+        $sql .= " SELECT";
+            $sql .= " od.odr_seq,";
+            $sql .= " od.acpt_dt_tm,";
+            $sql .= " od.cust_no,";
+            $sql .= " nm.cust_name,";
+            $sql .= " ij.net_ju_cd,";
+            $sql .= " od.mbr_kbn,";
+            $sql .= " od.gift_flg,";
+            $sql .= " rb.regular_buy_odr_seq,";
+            $sql .= " odd.item_kbn,";
+            $sql .= " ac.odr_kbn,";
+            $sql .= " ij.net_ju_rsn,";
+            $sql .= " od.odr_stat_kbn,";
+            $sql .= " od.core_sys_kbn,";
+            $sql .= " od.rcv_form_output_kbn,";
+            $sql .= " odu.upd_kbn,";
+            $sql .= " od.tel_no,";
+            $sql .= " od.del_flg,";
+            $sql .= " nm.mail_adr,";
+            $sql .= " od.site_kbn,";
+            $sql .= " od.route_dtl_kbn,";
+            $sql .= " od.login_cd,";
+            $sql .= " od.credit_card_no,";
+            $sql .= " od.avail_term,";
+            $sql .= " rb.credit_card_name,";
+            $sql .= " ac.hist_seq,";
+            $sql .= " ac.mbr_cd,";
+            $sql .= " ac.mbr_pwd,";
+            $sql .= " odu.acpt_dt_tm AS chng_order_dt,";
+            $sql .= " odu.credit_card_no AS chng_card_no,";
+            $sql .= " odu.avail_term AS chng_avail_term,";
+            $sql .= " odu.credit_card_name AS chng_card_name,";
+            $sql .= " ci.hist_seq AS chng_hist_seq,";
+            $sql .= " ci.mbr_cd AS chng_mbr_cd,";
+            $sql .= " ci.mbr_pwd AS chng_mbr_pwd,";
+            $sql .= " pay.trade_cd,";
+            $sql .= " pay.trade_pwd,";
+            $sql .= " pay.order_cd,";
+            $sql .= " pay.e_pay_account_cd ";
+        $sql .= " FROM";
+            $sql .= " f_odr od ";
+            $sql .= " INNER JOIN m_net_mbr nm ";
+                $sql .= " ON od.cust_no = nm.cust_no ";
+            $sql .= " LEFT JOIN m_net_ju_rsn ij ";
+                $sql .= " ON od.pend_cd = ij.net_ju_cd ";
+            $sql .= " LEFT JOIN h_approval_card_input ac ";
+                $sql .= " ON od.odr_seq = ac.odr_no ";
+            $sql .= " LEFT JOIN h_card_input ci ";
+                $sql .= " ON od.odr_seq = ci.odr_seq ";
+            $sql .= " LEFT JOIN odr_d odd ";
+                $sql .= " ON od.odr_seq = odd.odr_seq ";
+            $sql .= " LEFT JOIN m_item i ";
+                $sql .= " ON odd.item_cd = i.item_cd ";
+            $sql .= " LEFT JOIN f_odr_upd odu ";
+                $sql .= " ON od.odr_seq = odu.odr_cd ";
+            $sql .= " LEFT JOIN h_e_pay_authori pay ";
+                $sql .= " ON od.odr_seq = pay.odr_no ";
+            $sql .= " LEFT JOIN f_regular_buy_odr_info_record rb ";
+                $sql .= " ON od.cust_no = rb.cust_no ";
+            $sql .= " LEFT JOIN f_regular_buy_odr_info_dtl_record rbd ";
+                $sql .= " ON rb.regular_buy_odr_seq = rbd.regular_buy_odr_seq ";
+            $sql .= " LEFT JOIN m_offline_data of ";
+                $sql .= " ON rb.cust_no = of.cust_no ";
+            $sql .= " LEFT JOIN f_odr_direct oddi ";
+                $sql .= " ON od.odr_seq = oddi.odr_seq";
+		$sql .= " ORDER BY od.acpt_dt_tm DESC";
+    $sql .= " ) AS A ";
+    $sql .= " LEFT JOIN ( ";
+        $sql .= " SELECT";
+            $sql .= " base.odr_seq";
+            $sql .= " , coalesce(ad1.cosme_flag, 0) cosme_flag";
+            $sql .= " , coalesce(ad2.herb_flag, 0) herb_flag ";
+        $sql .= " FROM";
+            $sql .= " ( ";
+                $sql .= " SELECT";
+                    $sql .= " odr_d.odr_seq ";
+                $sql .= " FROM";
+                    $sql .= " odr_d ";
+                $sql .= " GROUP BY";
+                    $sql .= " odr_d.odr_seq";
+            $sql .= " ) AS base ";
+            $sql .= " LEFT JOIN ( ";
+                $sql .= " SELECT";
+                    $sql .= " dd.odr_seq";
+                    $sql .= " , 1 AS cosme_flag ";
+                $sql .= " FROM";
+                    $sql .= " odr_d AS dd ";
+                    $sql .= " INNER JOIN m_item AS mm ";
+                        $sql .= " ON dd.item_cd = mm.item_cd ";
+                        $sql .= " AND mm.ope_kbn = '1' ";
+                $sql .= " GROUP BY";
+                    $sql .= " dd.odr_seq";
+            $sql .= " ) AS ad1 ";
+                $sql .= " ON base.odr_seq = ad1.odr_seq ";
+            $sql .= " LEFT JOIN ( ";
+                $sql .= " SELECT";
+                    $sql .= " dd.odr_seq";
+                    $sql .= " , 1 AS herb_flag ";
+                $sql .= " FROM";
+                    $sql .= " odr_d AS dd ";
+                    $sql .= " inner join m_item AS mm ";
+                        $sql .= " ON dd.item_cd = mm.item_cd ";
+                        $sql .= " AND mm.ope_kbn = '2' ";
+                $sql .= " GROUP BY";
+                    $sql .= " dd.odr_seq";
+            $sql .= " ) AS ad2 ";
+                $sql .= " ON base.odr_seq = ad2.odr_seq";
+		$sql .= " ORDER BY base.odr_seq DESC";
+    $sql .= " ) AS B ";
+        $sql .= " ON A.odr_seq = B.odr_seq";
+		$sql .= " ORDER BY A.acpt_dt_tm DESC";

@@ -337,6 +337,7 @@
 	$sql  = "ON Re.enclos_cd10 = At10.att_cd ";
 	$sql  = "LEFT JOIN m_item_dtl Spc ";
 	$sql  = "ON Sh.item_cd = Spc.item_cd AND Sh.item_lvl = Spc.item_lvl ";
+	$sql  = "WHERE Re.odr_seq = ".getSqlValue($recv_order_id);
 	
     //SQLÇé¿çsÇ∑ÇÈ
     $result = dbQuery($con_utl, $sql);
