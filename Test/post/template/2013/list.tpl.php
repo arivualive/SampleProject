@@ -116,8 +116,8 @@
 		<!-- <tr>
 			<td class="xxtNormalBlackTitle" nowrap>注文状態指定</td>
 			<td>
-				<input type="checkbox" name="change_kbn[]" value="1" <?= in_array('1', $change_kbn) ? "checked" : "" ?>>注文変更&nbsp;&nbsp;&nbsp;&nbsp;
-				<input type="checkbox" name="change_kbn[]" value="0" <?= in_array('0', $change_kbn) ? "checked" : "" ?>>注文キャンセル&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="checkbox" name="change_kbn[]" value="1" 注文変更&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="checkbox" name="change_kbn[]" value="0" >注文キャンセル&nbsp;&nbsp;&nbsp;&nbsp;
 			</td>
 		</tr>
 		<?php // ▲R41505【R02-0212-001】Ｗｅｂサイトで注文変更機能追加簡易Ver 2020/09/15 chinhhv-ssv ?>
@@ -146,8 +146,8 @@
 		<tr>
 			<td class="xxtNormalBlackTitle" nowrap>区分</td>
 			<td>
-				<input type="checkbox" name="order_kbn[]" value="1" <?= in_array('1', $order_kbn) ? "checked" : "" ?>>化粧品
-				<input type="checkbox" name="order_kbn[]" value="2" <?= in_array('2', $order_kbn) ? "checked" : "" ?>>漢方
+				<input type="checkbox" name="order_kbn[]" value="1" >化粧品
+				<input type="checkbox" name="order_kbn[]" value="2" >漢方
 			</td>
 		</tr> -->
 		<?php // ▲R-#39403_【H31-0380-001】長白仙参リニューアル（WEB） 2020/01/31 sai-shiragiku ?>
@@ -205,12 +205,12 @@
 		<?php // <td nowrap>購入金額</td> ?>
 		<?php // ▲R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（次世代のための画面改修）2021/05/20 jst-arivazhagan  ?>
 		<td nowrap>サイト</td>
-		<? if ($AUTH_DELETE_FLG):?>
-		<td width="40" nowrap>削除</td>
-		<? endif; ?>
 		<?php /*▼2011/10/20 R-#2024 【管理ツール】注文受付電文の再送機能実装（EC-One hatano）*/ ?>
 		<? if ($AUTH_DELETE_FLG && $order_data[$rows] > 0):?>
 		<td width="80" nowrap>電文再送</td>
+		<? endif; ?>
+		<? if ($AUTH_DELETE_FLG):?>
+		<td width="40" nowrap>削除</td>
 		<? endif; ?>
 		<?php /*▲2011/10/20 R-#2024 【管理ツール】注文受付電文の再送機能実装（EC-One hatano）*/ ?>
 		<?php // ▼R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（次世代のための画面改修）2021/05/20 jst-arivazhagan  ?>
@@ -300,7 +300,7 @@
 			<?php // ▼R-#43112_【R02-0028-119】不具合対応（事象解消）_注文変更で支払方法を代引からカードに変更された場合にオーソリ取得しないはずが、オーソリ取得されている 2020/11/18 saisys-hasegawa ?>
 			<form name="frmchange<?= $i?>" action="cardNoView.php" method="post" target="_blank">
 				<input type="hidden" name="name"       value="<?= $order_data[$i]['kain_name']?>">
-				<input type="hidden" name="orderDt"    value="<?= $order_data[$i]['order_change_dt']?>">
+				<input type="hidden" name="orderDt"    value="<?= $order_data[$i]['order_dt']?>">
 				<input type="hidden" name="telNo"      value="<?= $order_data[$i]['tel_no']?>">
 				<input type="hidden" name="cardNo"     value="<?= $order_data[$i]['change_cc_no']?>">
 				<input type="hidden" name="cardTerm"   value="<?= $order_data[$i]['change_cc_term']?>">
@@ -309,16 +309,15 @@
 				<input type="hidden" name="kaiinPass"  value="<?= $order_data[$i]['change_kaiin_pass']?>">
 			</form>
 			<?php // ▲R-#43112_【R02-0028-119】不具合対応（事象解消）_注文変更で支払方法を代引からカードに変更された場合にオーソリ取得しないはずが、オーソリ取得されている 2020/11/18 saisys-hasegawa ?>
-			
-			<form name="frmchange<?= $i?>" action="payInfoView.php" method="post" target="_blank">
-				<input type="hidden" name="kainno"     value="<?= $order_data[$i]['kainno']?>">
-				<input type="hidden" name="name"       value="<?= $order_data[$i]['kain_name']?>">
-				<input type="hidden" name="orderDt"    value="<?= $order_data[$i]['order_change_dt']?>">
-				<input type="hidden" name="telNo"      value="<?= $order_data[$i]['tel_no']?>">
-				<input type="hidden" name="cardNo"     value="<?= $order_data[$i]['trace_cd']?>">
-				<input type="hidden" name="cardTerm"   value="<?= $order_data[$i]['trace_pwd']?>">
-				<input type="hidden" name="cardName"   value="<?= $order_data[$i]['order_cd']?>">
-				<input type="hidden" name="kaiinId"    value="<?= $order_data[$i]['e_pay_account_cd']?>">
+			<form name="payfrm<?= $i?>" action="elecPayView.php" method="post" target="_blank">
+				<input type="hidden" name="kainno" value="<?= $order_data[$i]['kainno']?>">
+				<input type="hidden" name="name" value="<?= $order_data[$i]['kain_name']?>">
+				<input type="hidden" name="telNo" value="<?= $order_data[$i]['tel_no']?>">
+				<input type="hidden" name="orderDt" value="<?= $order_data[$i]['order_dt']?>">
+				<input type="hidden" name="accessId" value="<?= $order_data[$i]['elecpay_access_id']?>">
+				<input type="hidden" name="accessPass" value="<?= $order_data[$i]['elecpay_access_pass']?>">
+				<input type="hidden" name="orderId" value="<?= $order_data[$i]['elecpay_order_id']?>">
+				<input type="hidden" name="paymentId" value="<?= $order_data[$i]['elecpay_epayment_id']?>">
 			</form>
 
 			<td nowrap align="right"><?= $i + 1 ?></td>
@@ -427,8 +426,8 @@
 				<?php } ?>
 			</td>
 			<td nowrap align="center">
-				<?php if ($order_data[$i]['e_pay_account_cd'] != '' || $order_data[$i]['kainno'] != '') { ?>
-					<a href="javascript:void(0)" onClick="viewCardNo(document.frm<?= $i?>)">表示</a>
+				<?php if ($order_data[$i]['elecpay_epaymenthistory_id'] != '' ) { ?>
+					<a href="javascript:void(0)" onClick="viewElecPay(document.payfrm<?= $i?>)">表示</a>
 				<?php } else { ?>
 					&nbsp;
 				<?php } ?>
@@ -455,11 +454,6 @@
 			<td nowrap><?= $order_data[$i]['tel_no'] ?></td>
 			<td nowrap><?= $order_data[$i]['email']?></td>
 			<td nowrap align="center"><?= $order_data[$i]['site_kbn_nm'] ?></td>
-			<? if ($AUTH_DELETE_FLG): ?>
-				<td nowrap align="center">
-					<a href="regist.php?mode=delete&recv_order_id=<?= $order_data[$i]['recv_order_id'] ?>" onClick="return DeleteChk(<?= $i + 1 ?>, '<?= $order_data[$i]['kain_name'] ?>');">削除</a>
-				</td>
-			<? endif; ?>
 			<?php /*▼2011/10/20 R-#2024 【管理ツール】注文受付電文の再送機能実装（EC-One hatano）*/ ?>
 			<? if ($AUTH_DELETE_FLG && $order_data[$rows] > 0 && $order_data[$i]['denbun_send'] == '1'): ?>
 				<td nowrap align="center">
@@ -467,6 +461,11 @@
 				</td>
 			<? elseif ($AUTH_DELETE_FLG && $order_data[$rows] > 0): ?>
 				<td nowrap align="center"></td>
+			<? endif; ?>
+			<? if ($AUTH_DELETE_FLG): ?>
+				<td nowrap align="center">
+					<a href="regist.php?mode=delete&recv_order_id=<?= $order_data[$i]['recv_order_id'] ?>" onClick="return DeleteChk(<?= $i + 1 ?>, '<?= $order_data[$i]['kain_name'] ?>');">削除</a>
+				</td>
 			<? endif; ?>
 		</tr>
 	<?php endfor; ?>
@@ -477,4 +476,5 @@
 <script>
 // カード番号調べ画面表示
 function viewCardNo(formNo){formNo.submit();}
+function viewElecPay(formNo){formNo.submit();}
 </script>

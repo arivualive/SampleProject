@@ -15,8 +15,9 @@ if ($mode == '' || $mode == 'clear') {
     // 注文キャンセル
     $change_kbn_chkd2 = '';
     // クリアボタンが押下された場合、すべてを選択するようにする
-    $change_kbn = '0';
+    //$change_kbn = '0';
     // ▲R41505【R02-0212-001】Ｗｅｂサイトで注文変更機能追加簡易Ver 2020/09/15 chinhhv-ssv
+    // ▲R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（次世代のための画面改修）2021/05/21 jst-arivazhagan
     $today = time();
     $start = $today - 2 * 24 * 60 * 60;
     $s_yy  = date('Y', $start);
@@ -66,6 +67,7 @@ if ($mode == '' || $mode == 'clear') {
     // // クリアボタンが押下された場合、すべてを選択するようにする
     // $s_net_ij_kbn = '0';
     //▲R-#20773_ドモアプリ開発 2016/03/16 nul-kai
+    // ▲R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（次世代のための画面改修）2021/05/21 jst-arivazhagan
     for($i=0; $i<count($net_ij_kbn); $i++){
         $net_ij_kbn[$i] = "";
     }
@@ -113,31 +115,31 @@ if($cnt==0){
     $net_ij_kbn[1]    = '2';
 }
 
-$cnt=0;
-for($i=0; $i<count($login_status); $i++){
-    if($login_status[$i] != ""){
-        $cnt++;
-    }
-}
-if($cnt==0){
-    $login_status[0]    = '1';
-    $login_status[1]    = '2';
-    $login_status[2]    = '3';
-}
+// $cnt=0;
+// for($i=0; $i<count($login_status); $i++){
+//     if($login_status[$i] != ""){
+//         $cnt++;
+//     }
+// }
+// if($cnt==0){
+//     $login_status[0]    = '1';
+//     $login_status[1]    = '2';
+//     $login_status[2]    = '3';
+// }
 
-$cnt=0;
-for($i=0; $i<count($odr_form); $i++){
-    if($odr_form[$i] != ""){
-        $cnt++;
-    }
-}
-if($cnt==0){
-    $odr_form[0]    = '1';
-    $odr_form[1]    = '2';
-    $odr_form[2]    = '3';
-    $odr_form[3]    = '4';
-}
-
+// $cnt=0;
+// for($i=0; $i<count($odr_form); $i++){
+//     if($odr_form[$i] != ""){
+//         $cnt++;
+//     }
+// }
+// if($cnt==0){
+//     $odr_form[0]    = '1';
+//     $odr_form[1]    = '2';
+//     $odr_form[2]    = '3';
+//     $odr_form[3]    = '4';
+// }
+// ▲R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（次世代のための画面改修）2021/05/21 jst-arivazhagan
 //DB接続
 $con_utl = dbConnect();
 
@@ -146,23 +148,31 @@ $where = array();
 // ▼R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（SQLを次世代用に書き換え）2021/05/21 jst-arivazhagan
 //$where[] = 'a.delete_flg <> 1';
 $where[] = "A.del_flg != '1'";
-
+// ▲R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（次世代のための画面改修）2021/05/21 jst-arivazhagan
+//注文検索開始日
 if ($s_yy != '' && $s_mm != '' && $s_dd != '') {
     $ymdh = sprintf('%04d%02d%02d000000', $s_yy, $s_mm, $s_dd);
     // ▼R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（SQLを次世代用に書き換え）2021/05/21 jst-arivazhagan
     //$where[] = "a.order_dt >= to_date('$ymdh', 'yyyymmddhh24miss')";
     $where[] = "A.acpt_dt_tm >= to_timestamp('$ymdh', 'yyyymmddhh24miss')";
+    // ▲R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（次世代のための画面改修）2021/05/21 jst-arivazhagan
 }
+
+//注文検索終了日
 if ($e_yy != '' && $e_mm != '' && $e_dd != '') {
     $ymdh = sprintf('%04d%02d%02d235959', $e_yy, $e_mm, $e_dd);
     // ▼R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（SQLを次世代用に書き換え）2021/05/21 jst-arivazhagan
     //$where[] = "a.order_dt <= to_date('$ymdh', 'yyyymmddhh24miss')";
     $where[] = "A.acpt_dt_tm <= to_timestamp('$ymdh', 'yyyymmddhh24miss')";
+    // ▲R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（次世代のための画面改修）2021/05/21 jst-arivazhagan
 }
+
+//会員番号
 if ($kainno != '')
     // ▼R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（SQLを次世代用に書き換え）2021/05/21 jst-arivazhagan
     //$where[] = "a.kainno like ".getSqlValue('%'.$kainno.'%');
-    $where[] = "A.cust_no = ".getSqlValue($kainno);
+    $where[] = " lpad(cast(A.cust_no as VARCHAR), 8,'0') like " .getSqlValue('%' .$kainno. '%');
+    // ▲R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（次世代のための画面改修）2021/05/21 jst-arivazhagan
 
 //▼R-#20773_ドモアプリ開発 2016/03/16 nul-kai
 // if($s_sitekbn === '2'){
@@ -179,6 +189,7 @@ if ($kainno != '')
 // }
 //▲R-#20773_ドモアプリ開発 2016/03/16 nul-kai
 // ▼R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（SQLを次世代用に書き換え）2021/05/21 jst-arivazhagan
+//サイト区分
 if (!empty($site_kbn)) {
 	$site_kbn_conditions = "";
 	if (in_array('1', $site_kbn)) {
@@ -210,6 +221,8 @@ if (!empty($site_kbn)) {
 // } else {
 //     $net_ij_kbn_chkd0 = 'checked="checked"';
 // }
+// ▲R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（次世代のための画面改修）2021/05/21 jst-arivazhagan
+//入力区分
 if (!empty($net_ij_kbn)) {
 	$net_ij_kbn_conditions = "";
 	if (in_array('1', $net_ij_kbn)) {
@@ -219,12 +232,13 @@ if (!empty($net_ij_kbn)) {
 		if ($net_ij_kbn_conditions != ""){
 			$net_ij_kbn_conditions = $net_ij_kbn_conditions." OR ";
 		}
-		$net_ij_kbn_conditions = $net_ij_kbn_conditions." (A.net_ju_cd != '0000' or A.net_ju_cd is not null or  A.net_ju_cd != '')";
+		$net_ij_kbn_conditions = $net_ij_kbn_conditions." (A.net_ju_cd != '0000' or (A.net_ju_cd is not null and trim(A.net_ju_cd) != ''))";
 	}
 }
 //▲2009/10/07 #xxx ネット注文自動化対応（kdl yoshii）
 
 // ▼R-#39403_【H31-0380-001】長白仙参リニューアル（WEB） 2020/01/31 sai-shiragiku
+//区分
 if (!empty($order_kbn)) {
 	// 区分の条件を編集
 	$order_kbn_conditions = "";
@@ -250,6 +264,7 @@ if (!empty($order_kbn)) {
 //▼2011/11/04 A-05826 R-#2059_【管理ツール】飲むドモ(直販)注文お礼メール送信 でメールアドレスでの検索ができない（ul yamashita）
         // ▼R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（SQLを次世代用に書き換え）2021/05/21 jst-arivazhagan
 		//$noArray = array();
+        //お名前
 		if ($kain_name != '') {
 			$value = $kain_name;
 			$value = preg_replace("/^'/", "'%", getSqlValue($value));
@@ -257,14 +272,20 @@ if (!empty($order_kbn)) {
             // ▼R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（SQLを次世代用に書き換え）2021/05/21 jst-arivazhagan
 			//$noArray[] = "V2.KAIN_NAME LIKE " . $value;
             $where[] = "A.cust_name LIKE " . $value;
+            // ▲R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（次世代のための画面改修）2021/05/21 jst-arivazhagan
 		}
+
+        //会員番号
 		if ($tel_no != '') {
 			$value = $tel_no;
 			$value = str_replace("-", "", $value);
             // ▼R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（SQLを次世代用に書き換え）2021/05/21 jst-arivazhagan
 			//$noArray[] = "V1.TEL_NO = DBMS_CRYPTO.Hash(to_clob(nvl(" . getSqlValue($value) . ",0)),3)";
             $where[] = "A.tel_no = DBMS_CRYPTO.Hash(to_clob(nvl(" . getSqlValue($value) . ",0)),3)";
+            // ▲R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（次世代のための画面改修）2021/05/21 jst-arivazhagan
 		}
+
+        //Eメールアドレス
 		if ($email != '') {
 			$value = $email;
 			if (strstr($value, "@")) {
@@ -281,6 +302,7 @@ if (!empty($order_kbn)) {
 		//if (count($noArray)) $where[] = 'b.KAINNO in (SELECT V1.KAINNO FROM Member1_V V1, Member2_V V2 WHERE '.implode(' AND ', $noArray).' AND V1.KAINNO = V2.KAINNO)';
 //▲2011/11/04 A-05826 R-#2059_【管理ツール】飲むドモ(直販)注文お礼メール送信 でメールアドレスでの検索ができない（ul yamashita）
 
+//状況
 if($mode == 'clear'){
     //$where[] = 'order_status IN (1)';
     $where[] = "A.odr_stat_kbn IN ('1')";
@@ -291,6 +313,7 @@ if($mode == 'clear'){
     }
 }
 
+//注文状態指定
 if ($change_kbn === '1') {
     $change_kbn_chkd1 = 'checked="checked"';
     $where[] = "A.upd_kbn = '1'";
@@ -302,6 +325,7 @@ if ($change_kbn === '1') {
     //$change_kbn_chkd2 = 'checked="checked"';
 }
 
+//ログイン状態
 if (!empty($login_status)) {
 	$login_status_conditions = "";
 	if (in_array('1', $login_status)) {
@@ -317,11 +341,12 @@ if (!empty($login_status)) {
 		if ($login_status_conditions != ""){
 			$login_status_conditions = $login_status_conditions." OR ";
 		}
-		$login_status_conditions = $login_status_conditions." (A.login_cd = '' OR A.login_cd IS NULL)";
+		$login_status_conditions = $login_status_conditions." (A.login_cd is null or (COALESCE(A.login_cd, '') = '' ))";
 	}
 	$where[] ='('.$login_status_conditions.')';
 }
 
+//注文形態
 if (!empty($odr_form)) {
 	$odr_form_conditions = "";
 	if (in_array('1', $odr_form)) {
@@ -337,14 +362,14 @@ if (!empty($odr_form)) {
 		if ($odr_form_conditions != ""){
 			$odr_form_conditions = $odr_form_conditions." OR ";
 		}
-		$odr_form_conditions = $odr_form_conditions." (( A.regular_buy_odr_seq IS NOT NULL) AND A.item_kbn='1' AND A.odr_kbn='2')";
+		$odr_form_conditions = $odr_form_conditions." ((A.regular_buy_odr_seq is not null AND trim(A.regular_buy_odr_seq) != '') AND A.item_kbn='1' AND A.odr_kbn='2')";
 	}
 	$where[] ='('.$odr_form_conditions.')';
     if (in_array('4', $odr_form)) {
 		if ($odr_form_conditions != ""){
 			$odr_form_conditions = $odr_form_conditions." OR ";
 		}
-		$odr_form_conditions = $odr_form_conditions." (A.gift_flg = '0' AND (A.regular_buy_odr_seq IS NOT NULL) AND A.item_kbn='1' AND A.odr_kbn='2')";
+		$odr_form_conditions = $odr_form_conditions." (A.gift_flg = '0' AND (A.regular_buy_odr_seq is not null AND trim(A.regular_buy_odr_seq) != '') AND A.item_kbn='1' AND A.odr_kbn='2')";
 	}
 	$where[] ='('.$odr_form_conditions.')';
 }
@@ -486,46 +511,90 @@ $where = implode(' AND ', $where);
 // }
 // ▲R41505【R02-0212-001】Ｗｅｂサイトで注文変更機能追加簡易Ver 2020/09/15 chinhhv-ssv
 $sql  = " SELECT";
-    $sql .= " A.odr_seq AS ORDER_SEQ,";
+
+    $sql .= " A.odr_seq AS RECV_ORDER_ID,";
+    //注文日時
     $sql .= " A.acpt_dt_tm AS ORDER_DT,";
+    //会員番号
     $sql .= " A.cust_no AS KAINNO,";
+    //お名前
     $sql .= " A.cust_name AS KAIN_NAME,";
+    //入力区分
     $sql .= " A.net_ju_cd AS NET_IJ_CD,";
-    $sql .= " A.mbr_kbn AS KAIN_KBN,";
-    $sql .= " A.gift_flg AS GIFT_FLG,";
-    $sql .= " A.regular_buy_odr_seq AS REGULAR_ORDER_ID,";
-    $sql .= " A.item_kbn AS SHOHIN_TYPE,";
-    $sql .= " A.odr_kbn AS ORDER_KBN,";
+    //ログイン状態
+    //注文形態
+    //マニュアル理由
     $sql .= " A.net_ju_rsn AS NET_IJ_INFO,";
+    //状況
     $sql .= " A.odr_stat_kbn AS ORDER_STATUS,";
+    //ホスト区分
     $sql .= " A.core_sys_kbn AS HOST_FLG,";
+    //受票出力区分
     $sql .= " A.rcv_form_output_kbn AS PRINT_FLG,";
+    //区分
+    $sql .= " A.odr_kbn AS ORDER_KBN,";
+    //変更区分
     $sql .= " A.upd_kbn AS CHANGE_KBN,";
+    
+    $sql .= " A.item_kbn AS SHOHIN_TYPE,";
+    //電話番号
     $sql .= " A.tel_no AS TEL_NO,";
+    //Eメールアドレス
     $sql .= " A.mail_adr AS EMAIL,";
-    $sql .= " A.site_kbn AS SITE_KBN,";
-    $sql .= " A.route_dtl_kbn AS ODRROUTEDTLKBN,";
+    //サイト
+    
+    //会員区分
+    $sql .= " A.mbr_kbn AS KAIN_KBN,";
+    //ログインコード
     $sql .= " A.login_cd AS NETMEMBER_ID,";
-    $sql .= " A.credit_card_no AS CC_NO,";
-    $sql .= " A.avail_term AS CC_TERM,";
-    $sql .= " A.credit_card_name AS CC_NAME,";
-    $sql .= " A.hist_seq AS REGIST_HISTORY_ID,";
-    $sql .= " A.mbr_cd AS KAIIN_ID,";
-    $sql .= " A.mbr_pwd AS KAIIN_PASS,";
-    $sql .= " A.chng_order_dt AS CHNG_ORDER_DT,";
-    $sql .= " A.chng_card_no AS CHNG_HIST_CC_NO,";
-    $sql .= " A.chng_avail_term AS CHNG_HIST_CC_TERM,";
-    $sql .= " A.chng_card_name AS CHNG_HIST_CC_NAME,";
-    $sql .= " A.chng_hist_seq AS CHNG_HIST_REGIST_HISTORY_ID,";
-    $sql .= " A.chng_mbr_cd AS CHNG_HIST_KAIIN_ID,";
-    $sql .= " A.chng_mbr_pwd AS CHNG_HIST_KAIIN_PASS,";
-    $sql .= " A.trade_cd AS ACCESS_ID,";
-    $sql .= " A.trade_pwd AS ACCESS_PASS,";
-    $sql .= " A.order_cd AS ORDER_ID,";
-    $sql .= " A.e_pay_account_cd AS EPAYMENT_ID,";
-    $sql .= " A.del_flg AS DELETE_FLAG,";
+    //サイト区分
+    $sql .= " A.site_kbn AS SITE_KBN,";
+    //贈物フラグ
+    $sql .= " A.gift_flg AS GIFT_FLG,";
+    //化粧品フラグ
     $sql .= " B.cosme_flag AS COSME_FLAG,";
-    $sql .= " B.herb_flag AS HERB_FLAG ";
+    //漢方フラグ
+    $sql .= " B.herb_flag AS HERB_FLAG,";
+    //定期購入注文連番
+    $sql .= " A.regular_buy_odr_seq AS REGULAR_ORDER_ID,";
+    //カード番号（カード情報）
+    $sql .= " A.credit_card_no AS CC_NO,";
+    //有効期限（カード情報）
+    $sql .= " A.avail_term AS CC_TERM,";
+    //クレジットカード名義人（カード情報）
+    $sql .= " A.credit_card_name AS CC_NAME,";
+    //会員ID（カード情報）
+    $sql .= " A.mbr_cd AS KAIIN_ID,";
+    //会員パスワード（カード情報）
+    $sql .= " A.mbr_pwd AS KAIIN_PASS,";
+    //注文日時（支払変更カード情報）
+    $sql .= " A.chng_order_dt AS CHNG_ORDER_DT,";
+    //カード番号（支払変更カード情報）
+    $sql .= " A.chng_card_no AS CHNG_HIST_CC_NO,";
+    //有効期限（支払変更カード情報）
+    $sql .= " A.chng_avail_term AS CHNG_HIST_CC_TERM,";
+    //クレジットカード名義人（支払変更カード情報）
+    $sql .= " A.chng_card_name AS CHNG_HIST_CC_NAME,";
+    //会員ID（支払変更カード情報）
+    $sql .= " A.chng_mbr_cd AS CHNG_HIST_KAIIN_ID,";
+    //会員パスワード（支払変更カード情報）
+    $sql .= " A.chng_mbr_pwd AS CHNG_HIST_KAIIN_PASS,";
+    //取引ID（Pay情報）
+    $sql .= " A.trade_cd AS ACCESS_ID,";
+    //取引パスワード（Pay情報）
+    $sql .= " A.trade_pwd AS ACCESS_PASS,";
+    //オーダーID（Pay情報）
+    $sql .= " A.order_cd AS ORDER_ID,";
+    //AmazonビリングアグリーメントID（Pay情報）
+    $sql .= " A.e_pay_account_cd AS EPAYMENT_ID,";
+    
+    $sql .= " A.route_dtl_kbn AS ODRROUTEDTLKBN,";
+    $sql .= " A.hist_seq AS REGIST_HISTORY_ID,";
+    $sql .= " A.chng_hist_seq AS CHNG_HIST_REGIST_HISTORY_ID,";
+    $sql .= " A.pay_hist_seq AS EPAYMENTHISTORY_ID,";
+    $sql .= " A.pay_clr_corp_cd AS EPAYCLR_CORP_CD,";
+    $sql .= " A.del_flg AS DELETE_FLAG";
+    
 $sql .= " FROM";
     $sql .= " ( ";
         $sql .= " SELECT";
@@ -563,36 +632,64 @@ $sql .= " FROM";
             $sql .= " ci.hist_seq AS chng_hist_seq,";
             $sql .= " ci.mbr_cd AS chng_mbr_cd,";
             $sql .= " ci.mbr_pwd AS chng_mbr_pwd,";
+            $sql .= " pay.hist_seq AS pay_hist_seq,";
             $sql .= " pay.trade_cd,";
             $sql .= " pay.trade_pwd,";
             $sql .= " pay.order_cd,";
-            $sql .= " pay.e_pay_account_cd ";
+            $sql .= " pay.e_pay_account_cd,";
+            $sql .= " pay.credit_corp_kbn AS pay_clr_corp_cd ";
         $sql .= " FROM";
+            //注文伝票
             $sql .= " f_odr od ";
+            //ネット会員台帳
             $sql .= " INNER JOIN m_net_mbr nm ";
+                //注文伝票.会員番号=ネット会員台帳.会員番号（INNER JOIN）
                 $sql .= " ON od.cust_no = nm.cust_no ";
+            //ネットIJ理由台帳
             $sql .= " LEFT JOIN m_net_ju_rsn ij ";
+                //注文伝票.保留コード=ネットIJ理由台帳.ネットIJコード（LEFT JOIN）
                 $sql .= " ON od.pend_cd = ij.net_ju_cd ";
+            //承認後カード登録履歴
             $sql .= " LEFT JOIN h_approval_card_input ac ";
+                // 注文伝票.受注連番=承認後カード登録履歴.注文番号（LEFT JOIN）
                 $sql .= " ON od.odr_seq = ac.odr_no ";
+            //カード登録履歴
             $sql .= " LEFT JOIN h_card_input ci ";
+                //注文伝票.受注連番=カード登録履歴.受注連番（LEFT JOIN）
                 $sql .= " ON od.odr_seq = ci.odr_seq ";
+            //注文明細
             $sql .= " LEFT JOIN odr_d odd ";
+                //注文伝票.受注連番=注文明細.受注連番（LEFT JOIN）
                 $sql .= " ON od.odr_seq = odd.odr_seq ";
+            //商品台帳
             $sql .= " LEFT JOIN m_item i ";
+                //注文明細.商品コード=商品台帳.商品コード（LEFT JOIN）
                 $sql .= " ON odd.item_cd = i.item_cd ";
+            //システム設定台帳
+            //注文変更伝票
             $sql .= " LEFT JOIN f_odr_upd odu ";
                 $sql .= " ON od.odr_seq = odu.odr_cd ";
+            //電子決済オーソリ履歴
             $sql .= " LEFT JOIN h_e_pay_authori pay ";
+                //注文伝票.受注連番=電子決済オーソリ履歴.注文番号（LEFT JOIN）
                 $sql .= " ON od.odr_seq = pay.odr_no ";
+            //定期購入注文情報記録伝票
             $sql .= " LEFT JOIN f_regular_buy_odr_info_record rb ";
+                //注文伝票.会員番号=定期購入注文情報記録伝票.会員番号（LEFT JOIN）
                 $sql .= " ON od.cust_no = rb.cust_no ";
+            //定期購入注文情報詳細記録伝票
             $sql .= " LEFT JOIN f_regular_buy_odr_info_dtl_record rbd ";
+                //定期購入注文情報記録伝票.定期購入受注連番=定期購入注文情報詳細記録伝票.定期購入受注連番（LEFT JOIN）
                 $sql .= " ON rb.regular_buy_odr_seq = rbd.regular_buy_odr_seq ";
+            //オフライン用データ台帳
             $sql .= " LEFT JOIN m_offline_data of ";
+                //定期購入注文情報記録伝票.会員番号=オフライン用データ台帳.会員番号（LEFT JOIN）
                 $sql .= " ON rb.cust_no = of.cust_no ";
+            //注文直販伝票
             $sql .= " LEFT JOIN f_odr_direct oddi ";
+                //注文伝票.受注連番=注文直販伝票.受注連番（LEFT JOIN）
                 $sql .= " ON od.odr_seq = oddi.odr_seq";
+        //注文伝票.受付日時（降順）
 		$sql .= " ORDER BY od.acpt_dt_tm DESC";
     $sql .= " ) AS A ";
     $sql .= " LEFT JOIN ( ";
@@ -637,10 +734,12 @@ $sql .= " FROM";
                 $sql .= " ON base.odr_seq = ad2.odr_seq";
 		$sql .= " ORDER BY base.odr_seq DESC";
     $sql .= " ) AS B ";
+        //A.注文連番=B.注文連番（LEFT JOIN）
         $sql .= " ON A.odr_seq = B.odr_seq";
-        $sql .= " WHERE ( ";
-        $sql .= $where;
-$sql .= ") ";
+            $sql .= " WHERE ( ";
+                $sql .= $where;
+            $sql .= ") ";
+//A.受付日時（降順）
 $sql .= " ORDER BY A.acpt_dt_tm DESC";
 //SQLを実行する
 $result = dbQuery($con_utl, $sql);
@@ -712,7 +811,7 @@ for ($i = 0; $i < $rows; $i++) {
     //▲R-#20773_ドモアプリ開発 2016/03/16 nul-kai
 
 	//▼R-#35174_【H30-0356-001】山本寛斎限定4点セット_WEB 2019/02/07 nul-nagata
-	$tmp['payment_num']      = getHtmlEscapedString($row['PAYMENT_NUM']);
+	//$tmp['payment_num']      = getHtmlEscapedString($row['PAYMENT_NUM']);
 	if (!is_null($row['REGIST_HISTORY_ID'])) {
 		$tmp['kaiin_id']         = getHtmlEscapedString($row['KAIIN_ID']);
 		$tmp['kaiin_pass']       = getHtmlEscapedString($row['KAIIN_PASS']);
@@ -733,10 +832,12 @@ for ($i = 0; $i < $rows; $i++) {
 	//▲R-#43112_【R02-0028-119】不具合対応（事象解消）_注文変更で支払方法を代引からカードに変更された場合にオーソリ取得しないはずが、オーソリ取得されている 2020/11/18 saisys-hasegawa
 
     if (!is_null($row['EPAYMENTHISTORY_ID'])) {
-		$tmp['trace_cd']         = getHtmlEscapedString($row['ACCESS_ID']);
-		$tmp['trace_pwd']       = getHtmlEscapedString($row['ACCESS_PASS']);
-		$tmp['order_cd']      = getHtmlEscapedString($row['ORDER_ID']);
-		$tmp['e_pay_account_cd']         = getHtmlEscapedString($row['EPAYMENT_ID']);
+		$tmp['elecpay_access_id']         = getHtmlEscapedString($row['ACCESS_ID']);
+		$tmp['elecpay_access_pass']       = getHtmlEscapedString($row['ACCESS_PASS']);
+		$tmp['elecpay_order_id']      = getHtmlEscapedString($row['ORDER_ID']);
+		$tmp['elecpay_epayment_id']         = getHtmlEscapedString($row['EPAYMENT_ID']);
+        $tmp['elecpay_clr_corp_cd']         = getHtmlEscapedString($row['EPAYCLR_CORP_CD']);
+        $tmp['elecpay_epaymenthistory_id']         = getHtmlEscapedString($row['EPAYMENTHISTORY_ID']);
 	}
 
     //▼2009/10/07 #xxx ネット注文自動化対応（kdl yoshii）
@@ -771,6 +872,9 @@ for ($i = 0; $i < $rows; $i++) {
     //▼2012/03/13 R-#3125 贈り物Web対応 uls-motoi
     $tmp['gift_flg'] = $row['GIFT_FLG'];
     //▲2012/03/13 R-#3125 贈り物Web対応 uls-motoi
+    $tmp['cosme_flg'] = $row['COSME_FLAG'];
+    $tmp['herb_flg'] = $row['HERB_FLAG'];
+
 
     $order_data[$i]  = $tmp;
 

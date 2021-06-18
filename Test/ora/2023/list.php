@@ -1,5 +1,5 @@
 <?
-$my_func = '2013';
+$my_func = '2023';
 //------------------------------------------------------------
 //CY共通モジュール読み込み
 //------------------------------------------------------------
@@ -45,80 +45,14 @@ $kainno			= trim($_REQUEST['kainno']);
 $kain_name		= trim($_REQUEST['kain_name']);
 $tel_no			= trim($_REQUEST['tel_no']);
 $email			= trim($_REQUEST['email']);
-
-// ▼R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（SQLを次世代用に書き換え）2021/05/21 jst-arivazhagan
-//$order_status	= $_REQUEST['order_status'];
-// ▼R41505【R02-0212-001】Ｗｅｂサイトで注文変更機能追加簡易Ver 2020/09/15 chinhhv-ssv
-// $change_kbn	= $_REQUEST['change_kbn'];
-// if ($change_kbn == ''){
-// 	$change_kbn = array();
-// }
-
-//$change_kbn = '0';
-if (isset($_POST['change_kbn']) && is_numeric($_POST['change_kbn'])) {
-    $change_kbn = $_POST['change_kbn'];
-}
-
 $order_status	= $_REQUEST['order_status'];
-if ($order_status == '')
-	$order_status = array();
 
-$site_kbn		= $_REQUEST['site_kbn'];
-if ($site_kbn == ''){
-	$site_kbn = array();
-}
+if ($order_status == '') $order_status = array();
 
-$net_ij_kbn		= $_REQUEST['net_ij_kbn'];
-if ($net_ij_kbn == ''){
-	$net_ij_kbn = array();
-}
-
-$order_kbn		= $_REQUEST['order_kbn'];
-if ($order_kbn == ''){
-	$order_kbn = array();
-}
-
-$login_status		= $_REQUEST['login_status'];
-if ($login_status == ''){
-	$login_status = array();
-}
-
-$odr_form		= $_REQUEST['odr_form'];
-if ($odr_form == ''){
-	$odr_form = array();
-}
-// ▼R41505【R02-0212-001】Ｗｅｂサイトで注文変更機能追加簡易Ver 2020/09/15 chinhhv-ssv
-// ▼R-#39403_【H31-0380-001】長白仙参リニューアル（WEB） 2020/01/31 sai-shiragiku
-// $order_kbn		= $_REQUEST['order_kbn'];
-// ▲R-#39403_【H31-0380-001】長白仙参リニューアル（WEB） 2020/01/31 sai-shiragiku
-// if ($order_status == '')
-// 	$order_status = array();
-// ▼R-#39403_【H31-0380-001】長白仙参リニューアル（WEB） 2020/01/31 sai-shiragiku
-// if ($order_kbn == ''){
-// 	$order_kbn = array();
-// }
-// ▲R-#39403_【H31-0380-001】長白仙参リニューアル（WEB） 2020/01/31 sai-shiragiku
-// ▼モバイル対応 2009/03/17 kdl.ohyanagi add start
-// サイト区分を取得する
-// 1:PC
-// 2:携帯
-// $s_sitekbn = '0';
-// if (isset($_POST['sitekbn']) && is_numeric($_POST['sitekbn'])) {
-//     $s_sitekbn = $_POST['sitekbn'];
-// }
-// ▲モバイル対応 2009/02/17 kdl.ohyanagi add start
-
-
-//▼2009/10/07 #xxx ネット注文自動化対応（kdl yoshii）
-// サイト区分を取得する
-// 1:PC
-// 2:携帯
-// $NET_IJ_KBN = '0';
-// if (isset($_POST['NET_IJ_KBN']) && is_numeric($_POST['NET_IJ_KBN'])) {
-//     $NET_IJ_KBN = $_POST['NET_IJ_KBN'];
-// }
-//▲2009/10/07 #xxx ネット注文自動化対応（kdl yoshii）
-// ▲R-#45290_【R03-0111-028】次世代システム_WEB管理ツール開発（次世代のための画面改修）2021/05/20 jst-arivazhagan
+// ▼R-#31664_【H29-00239-01】長白仙参即ログイン対応 2017/08/09 nul-inagaki
+$service_kbn		= $_REQUEST['service_kbn'];
+if ($service_kbn == '') $service_kbn = array();
+// ▲R-#31664_【H29-00239-01】長白仙参即ログイン対応 2017/08/09 nul-inagaki
 
 //------------------------------------------------------------
 //DBから情報を取得

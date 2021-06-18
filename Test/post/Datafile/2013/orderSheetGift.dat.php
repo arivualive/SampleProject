@@ -178,92 +178,94 @@
     // $sql = "SELECT ".implode(', ', $cols)." FROM ".implode(', ', $froms)." WHERE ".implode(' AND ', $where);
 
 
-    $sql  = "SELECT ";
-    $sql  = "Re.cust_no AS KAINNO, ";
-    $sql  = "Re.tel_no AS TEL_NO, ";
-    $sql  = "Re.pay_way_kbn AS PAYMENT_TYPE, ";
-    $sql  = "Re.pay_cnt AS PAYMENT_NUM, ";
-    $sql  = "Re.credit_card_no AS CC_NO, ";
-    $sql  = "Re.avail_term AS CC_TERM, ";
-    $sql  = "Re.card_input_kbn AS CC_REGIST_KBN, ";
-    $sql  = "Re.site_kbn AS SITE_KBN, ";
-    $sql  = "Re.dlv_req_memo AS DELIVERY_REQUEST, ";
-    $sql  = "to_char(Re.acpt_dt_tm, 'YYYY/MM/DD HH24:MI:SS')  AS ORDER_DT, ";
-    $sql  = "COALESCE(Re.tot_odr_amnt, 0) as ORDER_AMOUNT, ";
-    $sql  = "COALESCE(Re.tot_odr_tax, 0) as ORDER_TAXRATE, ";
-    $sql  = "At3.att_cont AS SHIP_CAUTION3, ";
-    $sql  = "Re.ship_att_cd_1 AS SHIP_CAUTION3_CD, ";
-    $sql  = "Cr.credit_card_corp_name AS COMPANYMEIFULL, ";
-    $sql  = "We.cust_name AS NAMEKANJI, ";
-    $sql  = "We.cust_name_kana AS NAMEKANA, ";
-    $sql  = "We.era_kbn AS NAMEOFERA, ";
-    $sql  = "We.birthday AS BIRTHDAY, ";
-    $sql  = "We.adr AS H_KNJ_ADDRESS, ";
-    $sql  = "We.adr_non_chg_part AS H_NOT_CONV, ";
-    $sql  = "( ";
-    $sql  = "select  ";
-    $sql  = "sum(CAST (s.price AS INTEGER) * r.amnt)  as wk_price  ";
-    $sql  = "from odr_d r ,m_item s , m_sys_set sy ";
-    $sql  = "where sy.site_kbn='1'  ";
-    $sql  = "and  r.item_cd  = s.item_cd  ";
-    $sql  = "and (  ";
-    $sql  = "( r.item_lvl is null and s.item_lvl is null )  ";
-    $sql  = "or ( r.item_lvl is not null and r.item_lvl = s.item_lvl )  ";
-    $sql  = ")  ";
-    $sql  = "and r.odr_seq = Re.odr_seq ";
-    $sql  = ") as PRICE2,  ";
-    $sql  = "(  ";
-    $sql  = "select sum( (CAST (s.price AS INTEGER) * r.amnt) * (sy.TAX_RATE) ) as wk_price  ";
-    $sql  = "from odr_d r ,m_item s , m_sys_set sy ";
-    $sql  = "where sy.site_kbn='1'  ";
-    $sql  = "and  r.item_cd  = s.item_cd  ";
-    $sql  = "and (  ";
-    $sql  = "( r.item_lvl is null and s.item_lvl is null )  ";
-    $sql  = "or ( r.item_lvl is not null and r.item_lvl = s.item_lvl )  ";
-    $sql  = ") ";
-    $sql  = "and r.odr_seq = Re.odr_seq ";
-    $sql  = ") as TAX, ";
-    $sql  = "Ij.net_ij_rsn AS NET_IJ_INFO, ";
-    $sql  = "Gi.ship_att_kbn_1 AS SHIP_CAUTION_CD1, ";
-    $sql  = "Gi.ship_att_kbn_2 AS SHIP_CAUTION_CD2, ";
-    $sql  = "Gi.msg_card_kbn AS MSG_NEED_FLG, ";
-    $sql  = "Gi.dlv_to_kbn AS DELIVERY_KBN, ";
-    $sql  = "Gi.dlv_req_dt AS DELIVERY_DT, ";
-    $sql  = "Gi.dlv_tm_kbn AS DELIVERY_TIME_TYPE, ";
-    $sql  = "Gi.rcver_name AS NAME_KANJI, ";
-    $sql  = "Gi.rcver_kana_name AS NAME_KANA, ";
-    $sql  = "Gi.rcver_adr_post_no AS ANOTHER_POST_NO, ";
-    $sql  = "Gi.kana_adr AS ANOTHER_ADDR_KANA, ";
-    $sql  = "Gi.rcver_adr AS ANOTHER_ADDR , ";
-    $sql  = "Gi.rcver_adr_non_chg_part_kana AS ANOTHER_ADDR_NOT_CONV_KANA, ";
-    $sql  = "Gi.rcver_adr_non_chg_part AS ANOTHER_ADDR_NOT_CONV, ";
-    $sql  = "Gi.rcver_adr_tel_no AS ADD_ANOTHER_TELNO, ";
-    $sql  = "Gi.domo_use_kbn AS DW_USED_KBN, ";
-    $sql  = "At.att_cont AS SHIP_CAUTION1, ";
-    $sql  = "At2.att_cont AS SHIP_CAUTION2 ";
-    $sql  = "FROM f_odr Re ";
-    $sql  = "LEFT JOIN m_offline_data We ";
-    $sql  = "ON Re.cust_no = We.cust_no ";
-    $sql  = "LEFT JOIN m_credit_corp Cr ";
-    $sql  = "ON Re.credit_card_corp = Cr.credit_card_corp_cd ";
-    $sql  = "LEFT JOIN m_net_ij_rsn Ij ";
-    $sql  = "ON Re.pend_cd = Ij.net_ij_cd ";
-    $sql  = "LEFT JOIN f_gift Gi ";
-    $sql  = "ON Re.odr_seq = Gi.odr_seq ";
-    $sql  = "LEFT JOIN m_att At ";
-    $sql  = "ON Gi.ship_att_kbn_1 =At.att_cd ";
-    $sql  = "LEFT JOIN m_att At2 ";
-    $sql  = "ON Gi.ship_att_kbn_2 = At2.att_cd ";
-    $sql  = "LEFT JOIN m_att At3 ";
-    $sql  = "ON Re.ship_att_cd_1 = At3.att_cd ";
-    $sql  = "WHERE Re.odr_seq = ".getSqlValue($recv_order_id); 
 
+    $sql  = "SELECT ";
+    $sql  .= "Re.cust_no AS KAINNO, ";
+    $sql  .= "Re.tel_no AS TEL_NO, ";
+    $sql  .= "Re.pay_way_kbn AS PAYMENT_TYPE, ";
+    $sql  .= "Re.pay_cnt AS PAYMENT_NUM, ";
+    $sql  .= "Re.credit_card_no AS CC_NO, ";
+    $sql  .= "Re.avail_term AS CC_TERM, ";
+    $sql  .= "Re.card_input_kbn AS CC_REGIST_KBN, ";
+    $sql  .= "Re.site_kbn AS SITE_KBN, ";
+    $sql  .= "Re.dlv_req_memo AS DELIVERY_REQUEST, ";
+    $sql  .= "to_char(Re.acpt_dt_tm, 'YYYY/MM/DD HH24:MI:SS')  AS ORDER_DT, ";
+    $sql  .= "COALESCE(Re.tot_odr_amnt, 0) as ORDER_AMOUNT, ";
+    $sql  .= "COALESCE(Re.tot_odr_tax, 0) as ORDER_TAXRATE, ";
+    $sql  .= "At3.att_cont AS SHIP_CAUTION3, ";
+    $sql  .= "Re.ship_att_cd_1 AS SHIP_CAUTION3_CD, ";
+    $sql  .= "Cr.credit_card_corp_name AS COMPANYMEIFULL, ";
+    $sql  .= "We.cust_name AS NAMEKANJI, ";
+    $sql  .= "We.cust_name_kana AS NAMEKANA, ";
+    $sql  .= "We.era_kbn AS NAMEOFERA, ";
+    $sql  .= "We.birthday AS BIRTHDAY, ";
+    $sql  .= "We.adr AS H_KNJ_ADDRESS, ";
+    $sql  .= "We.adr_non_chg_part AS H_NOT_CONV, ";
+    $sql  .= "( ";
+    $sql  .= "select  ";
+    $sql  .= "sum(CAST (s.price AS INTEGER) * r.num)  as wk_price  ";
+    $sql  .= "from odr_d r ,m_item s , m_sys_set sy ";
+    $sql  .= "where sy.site_kbn='1'  ";
+    $sql  .= "and  r.item_cd  = s.item_cd  ";
+    $sql  .= "and (  ";
+    $sql .= "((r.item_lvl is null or (COALESCE(r.item_lvl, '') = '' )) and (s.item_lvl is null or (COALESCE(s.item_lvl, '') = '' )))  "; 
+	$sql .= "or ((r.item_lvl is not null and trim(r.item_lvl) != '') and r.item_lvl = s.item_lvl )  ";
+	$sql .= ")  ";
+    $sql  .= "and r.odr_seq = ".getSqlValue($recv_order_id);
+    $sql  .= ") as PRICE2,  ";
+    $sql  .= "(  ";
+    $sql  .= "select sum( (CAST (s.price AS INTEGER) * r.num) * (sy.TAX_RATE) ) as wk_price  ";
+    $sql  .= "from odr_d r ,m_item s , m_sys_set sy ";
+    $sql  .= "where sy.site_kbn='1'  ";
+    $sql  .= "and  r.item_cd  = s.item_cd  ";
+    $sql  .= "and (  ";
+    $sql .= "((r.item_lvl is null or (COALESCE(r.item_lvl, '') = '' )) and (s.item_lvl is null or (COALESCE(s.item_lvl, '') = '' )))  "; 
+	$sql .= "or ((r.item_lvl is not null and trim(r.item_lvl) != '') and r.item_lvl = s.item_lvl )  ";
+	$sql .= ")  ";
+    $sql  .= "and r.odr_seq = ".getSqlValue($recv_order_id);
+    $sql  .= ") as TAX, ";
+    $sql  .= "Ij.net_ju_rsn AS NET_IJ_INFO, ";
+    $sql  .= "Gi.ship_att_kbn_1 AS SHIP_CAUTION_CD1, ";
+    $sql  .= "Gi.ship_att_kbn_2 AS SHIP_CAUTION_CD2, ";
+    $sql  .= "Gi.msg_card_kbn AS MSG_NEED_FLG, ";
+    $sql  .= "Gi.dlv_to_kbn AS DELIVERY_KBN, ";
+    $sql  .= "Gi.dlv_req_dt AS DELIVERY_DT, ";
+    $sql  .= "Gi.dlv_tm_kbn AS DELIVERY_TIME_TYPE, ";
+    $sql  .= "Gi.rcver_name AS NAME_KANJI, ";
+    $sql  .= "Gi.rcver_kana_name AS NAME_KANA, ";
+    $sql  .= "Gi.rcver_adr_post_no AS ANOTHER_POST_NO, ";
+    $sql  .= "Gi.kana_adr AS ANOTHER_ADDR_KANA, ";
+    $sql  .= "Gi.rcver_adr AS ANOTHER_ADDR , ";
+    $sql  .= "Gi.rcver_adr_non_chg_part_kana AS ANOTHER_ADDR_NOT_CONV_KANA, ";
+    $sql  .= "Gi.rcver_adr_non_chg_part AS ANOTHER_ADDR_NOT_CONV, ";
+    $sql  .= "Gi.rcver_adr_tel_no AS ADD_ANOTHER_TELNO, ";
+    $sql  .= "Gi.domo_use_kbn AS DW_USED_KBN, ";
+    $sql  .= "At.att_cont AS SHIP_CAUTION1, ";
+    $sql  .= "At2.att_cont AS SHIP_CAUTION2 ";
+    $sql  .= "FROM f_odr Re ";
+    $sql  .= "LEFT JOIN m_offline_data We ";
+    $sql  .= "ON Re.cust_no = We.cust_no ";
+    $sql  .= "LEFT JOIN m_credit_corp Cr ";
+    $sql  .= "ON Re.credit_card_corp = Cr.credit_card_corp_cd ";
+    $sql  .= "LEFT JOIN m_net_ju_rsn Ij ";
+    $sql  .= "ON Re.pend_cd = Ij.net_ju_cd ";
+    $sql  .= "LEFT JOIN f_gift Gi ";
+    $sql  .= "ON Re.odr_seq = Gi.odr_seq ";
+    $sql  .= "LEFT JOIN m_att At ";
+    $sql  .= "ON Gi.ship_att_kbn_1 =At.att_cd ";
+    $sql  .= "LEFT JOIN m_att At2 ";
+    $sql  .= "ON Gi.ship_att_kbn_2 = At2.att_cd ";
+    $sql  .= "LEFT JOIN m_att At3 ";
+    $sql  .= "ON Re.ship_att_cd_1 = At3.att_cd ";
+    $sql  .= "WHERE Re.odr_seq = ".getSqlValue($recv_order_id); 
     // SQLを実行する
     $result = dbQuery($con_utl, $sql);
     // データカウントを取得する
-    $rows = getNumRows($result, $arr_utl);
+    //$rows = getNumRows($result, $arr_utl);
+    $rows = getNumRows($result);
     //データ取得
-    $row = dbFetchRow($result, 0, $arr_utl);
+    //$row = dbFetchRow($result, 0, $arr_utl);
+    $row = dbFetchRow($result);
 
     //---------------------------------------------------------------------
     // SQL文作成(購入商品情報取得)
@@ -297,34 +299,34 @@
     // $where_prd[] = "Sh.SHOHIN_LEVEL = Spc.SHOHIN_LEVEL(+)";
     //▲2017/12/12 R-#32054_【H29-00336-01】養生薬湯リニューアル(nul fukunaga)
 
-    $sql  = "SELECT ";
-    $sql  = "Pr.item_cd AS SHOHIN_CD, ";
-    $sql  = "Pr.num AS AMOUNT, ";
-    $sql  = "Pr.amnt AS PRICE, ";
-    $sql  = "Pr.item_kbn AS SHOHIN_TYPE, ";
-    $sql  = "Sh.item_name_10 AS NAME10, ";
-    $sql  = "Sh.item_name AS NAMEFULL, ";
-    $sql  = "Sh.item_lvl AS SHOHIN_LEVEL, ";
-    $sql  = "Spc.item_dtl_kbn AS SHOHIN_KIND  ";
-    $sql  = "FROM ";
-    $sql  = "odr_d Pr  ";
-    $sql  = "LEFT JOIN m_item Sh  ";
-    $sql  = "ON Pr.item_cd = Sh.item_cd  ";
-    $sql  = "AND ((Pr.item_lvl IS NOT NULL  ";
-    $sql  = "AND Pr.item_lvl = Sh.item_lvl)  ";
-    $sql  = "OR (Pr.item_lvl IS NULL AND Sh.item_lvl IS NULL))  ";
-    $sql  = "LEFT JOIN m_item_dtl Spc  ";
-    $sql  = "ON Sh.item_cd = Spc.item_cd  ";
-    $sql  = "AND Sh.item_lvl = Spc.item_lvl ";
-    $sql  = "Pr.odr_seq = ".getSqlValue($recv_order_id);
+    $sql_prd  = "SELECT ";
+    $sql_prd  .= "Pr.item_cd AS SHOHIN_CD, ";
+    $sql_prd  .= "Pr.num AS AMOUNT, ";
+    $sql_prd  .= "Pr.amnt AS PRICE, ";
+    $sql_prd  .= "Pr.item_kbn AS SHOHIN_TYPE, ";
+    $sql_prd  .= "Sh.item_name_10 AS NAME10, ";
+    $sql_prd  .= "Sh.item_name AS NAMEFULL, ";
+    $sql_prd  .= "Sh.item_lvl AS SHOHIN_LEVEL, ";
+    $sql_prd  .= "Spc.item_dtl_kbn AS SHOHIN_KIND  ";
+    $sql_prd  .= "FROM ";
+    $sql_prd  .= "odr_d Pr  ";
+    $sql_prd  .= "LEFT JOIN m_item Sh  ";
+    $sql_prd  .= "ON Pr.item_cd = Sh.item_cd  ";
+    $sql_prd  .= "AND (((Pr.item_lvl is not null and trim(Pr.item_lvl) != '')  ";
+    $sql_prd  .= "AND Pr.item_lvl = Sh.item_lvl)  ";
+    $sql_prd  .= "OR ((Pr.item_lvl is null or (COALESCE(Pr.item_lvl, '') = '' )) AND Sh.item_lvl IS NULL))  ";
+    $sql_prd  .= "LEFT JOIN m_item_dtl Spc  ";
+    $sql_prd  .= "ON Sh.item_cd = Spc.item_cd  ";
+    $sql_prd  .= "AND Sh.item_lvl = Spc.item_lvl ";
+    $sql_prd  .= "WHERE Pr.odr_seq = ".getSqlValue($recv_order_id);
 
     //$sql_prd = "SELECT ".implode(', ', $cols_prd)." FROM ".implode(', ', $froms_prd)." WHERE ".implode(' AND ', $where_prd) .'ORDER BY Sh.SHOHIN_CD ASC';
 
     // SQLを実行する
     $result_prd = dbQuery($con_utl, $sql_prd);
     // データカウントを取得する
-    $rows_prd = getNumRows($result_prd, $arr_utl);
-
+    //$rows_prd = getNumRows($result_prd, $arr_utl);
+    $rows_prd = getNumRows($result_prd);
     //---------------------------------------------------------------------
     // 受表表示データ作成(基本情報作成)
     //---------------------------------------------------------------------
@@ -336,7 +338,8 @@
     //注文受付日時
     $tmp['order_dt'] = getHtmlEscapedString($row['ORDER_DT']);
     //会員名(漢字)
-    $tmp['namekanji']= getHtmlEscapedString(ssk_decrypt($row['NAMEKANJI']));
+    //$tmp['namekanji']= getHtmlEscapedString(ssk_decrypt($row['NAMEKANJI']));
+    $tmp['namekanji']= getHtmlEscapedString($row['NAMEKANJI']);
     //年号
     $nameofera = "";
     if (array_key_exists(intval($row['NAMEOFERA']), $name_of_era)) {
@@ -344,16 +347,21 @@
     }
     $tmp['nameofera'] = $nameofera;
     //生年月日
-    $birthday = getHtmlEscapedString(ssk_decrypt($row['BIRTHDAY']));
+    //$birthday = getHtmlEscapedString(ssk_decrypt($row['BIRTHDAY']));
+    $birthday = getHtmlEscapedString($row['BIRTHDAY']);
     $tmp['birthday']     = substr($birthday,0,2).'.'.substr($birthday,2,2).'.'.substr($birthday,4,2);
     //住所
-    $tmp['address']     = getHtmlEscapedString(ssk_decrypt($row['H_KNJ_ADDRESS']));
+    //$tmp['address']     = getHtmlEscapedString(ssk_decrypt($row['H_KNJ_ADDRESS']));
+    $tmp['address']     = getHtmlEscapedString($row['H_KNJ_ADDRESS']);
     //非変換部住所
-    $tmp['address_not']     = getHtmlEscapedString(ssk_decrypt($row['H_NOT_CONV']));
+    //$tmp['address_not']     = getHtmlEscapedString(ssk_decrypt($row['H_NOT_CONV']));
+    $tmp['address_not']     = getHtmlEscapedString($row['H_NOT_CONV']);
     //会員名
-    $tmp['name']     = getHtmlEscapedString(ssk_decrypt($row['NAMEKANA']));
+    //$tmp['name']     = getHtmlEscapedString(ssk_decrypt($row['NAMEKANA']));
+    $tmp['name']     = getHtmlEscapedString($row['NAMEKANA']);
     //電話番号
-    $tmp['tel']      = getHtmlEscapedString(ssk_decrypt($row['TEL_NO']));
+    //$tmp['tel']      = getHtmlEscapedString(ssk_decrypt($row['TEL_NO']));
+    $tmp['tel']      = getHtmlEscapedString($row['TEL_NO']);
     //受区
     $tmp['ukeku']   = (intval($row['SITE_KBN']) === 1) ? 'インターネット' : 'モバイル';
     //支払い方法
@@ -385,9 +393,13 @@
     $tmp['companymeifull'] = $row['COMPANYMEIFULL'];
     //カードNo.
     $conv_cc_no = "";
-    $cc_no = strlen(getHtmlEscapedString(ssk_decrypt($row['CC_NO'])));
+    // $cc_no = strlen(getHtmlEscapedString(ssk_decrypt($row['CC_NO'])));
+    // if ($cc_no != 0){
+    //     $conv_cc_no = str_repeat("*",$cc_no - 4).$conv_cc_no.substr(getHtmlEscapedString(ssk_decrypt($row['CC_NO'])), -4);
+    // }
+    $cc_no = strlen(getHtmlEscapedString($row['CC_NO']));
     if ($cc_no != 0){
-        $conv_cc_no = str_repeat("*",$cc_no - 4).$conv_cc_no.substr(getHtmlEscapedString(ssk_decrypt($row['CC_NO'])), -4);
+        $conv_cc_no = str_repeat("*",$cc_no - 4).$conv_cc_no.substr(getHtmlEscapedString($row['CC_NO']), -4);
     }
     $tmp['cc_no'] = $conv_cc_no;
     //有効期限

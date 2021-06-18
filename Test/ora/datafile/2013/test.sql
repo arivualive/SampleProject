@@ -126,6 +126,71 @@ ON Re.odr_seq = Pr.odr_seq
 WHERE Re.odr_seq = ".getSqlValue($recv_order_id)
 
 
+f_odr.odr_seq,
+
+
+
+odr_d.item_kbn,
+
+
+f_odr.core_sys_kbn,
+
+
+f_odr.del_flg,
+
+
+f_odr.route_dtl_kbn,
+
+
+h_approval_card_input.hist_seq,
+
+
+h_card_input.hist_seq AS chng_hist_seq,
+
+h_e_pay_authori.trade_cd,
+h_e_pay_authori.trade_pwd,
+h_e_pay_authori.order_cd,
+h_e_pay_authori.e_pay_account_cd 
+
+
+acptdttm							
+mbrno							
+name							
+netijcd							
+loginstatus							
+odrform							
+netijrsn							
+odrstatkbn							
+hostkbn							
+rcvformoutputkbn							
+odrkbn							
+updkbn							
+telno							
+email							
+sitekbnnm							
+mbrkbn							
+logincd							
+sitekbn							
+giftflg							
+cosmeflag							
+herbflag							
+regularbuyodrseq							
+creditcardno							
+availterm							
+creditcardname							
+mbrcd							
+mbrpwd							
+changeacptdttm							
+changecreditcardno							
+changeavailterm							
+changecreditcardname							
+changembrcd							
+changembrpwd							
+tradecd							
+tradepwd							
+ordercd							
+epayaccountcd							
+
 
 
 

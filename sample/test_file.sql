@@ -1213,3 +1213,77 @@ $sql .= " FROM";
     $sql .= " ) AS B ";
         $sql .= " ON A.odr_seq = B.odr_seq";
 		$sql .= " ORDER BY A.acpt_dt_tm DESC";
+
+
+
+
+SELECT * FROM (
+SELECT 
+a.recv_order_id, 
+a.site_kbn, 
+a.kainno, 
+stfunc_ssk(a.tel_no) as tel_no, 
+a.netmember_id, 
+to_char(a.order_dt, 'YYYY/MM/DD HH24:MI:SS') as order_dt, 
+stfunc_ssk(b.kain_name) as kain_name, 
+decode(a.site_kbn, 1, stfunc_ssk(b.email), stfunc_ssk(b.m_email)) as email, 
+a.host_flg, 
+a.print_flg, 
+a.order_status, 
+a.session_id 
+a.NET_IJ_CD 
+c.NET_IJ_INFO
+a.RESERVE_KBN
+a.GIFT_FLG
+(NVL(a.TOTAL_ORDER_AMOUNT, 0) + NVL(a.TOTAL_ORDER_TAXRATE, 0)) as ORDER_AMOUNT
+a.ODRROUTEDTLKBN
+ a.PAYMENT_NUM
+ h.REGIST_HISTORY_ID
+ stfunc_ssk(h.KAIIN_ID) as KAIIN_ID
+ stfunc_ssk(h.KAIIN_PASS) as KAIIN_PASS
+ h.CLR_CORP_CD
+ h.CARD_SEQ
+ a.CC_TERM
+ stfunc_ssk(a.CC_NO) as CC_NO
+ chnghst.REGIST_HISTORY_ID as CHNG_HIST_REGIST_HISTORY_ID
+ stfunc_ssk(chnghst.KAIIN_ID)  as CHNG_HIST_KAIIN_ID
+ stfunc_ssk(chnghst.KAIIN_PASS) as CHNG_HIST_KAIIN_PASS
+ chnghst.CLR_CORP_CD as CHNG_HIST_CLR_CORP_CD
+ chnghst.CARD_SEQ  as CHNG_HIST_CARD_SEQ
+( 
+select change_kbn 
+from orderchange_tbl
+where 
+recv_change_id = ''
+) as change_kbn, 
+( 
+select to_char(order_dt, 'YYYY/MM/DD HH24:MI:SS') as order_dt 
+from orderchange_tbl
+where 
+recv_change_id = ''
+) as order_change_dt,
+( 
+SELECT CONCAT(stfunc_ssk(cc_no),CONCAT(',',CONCAT(stfunc_ssk(cc_name),CONCAT(',',CONCAT(cc_term,CONCAT(',',payment_num))))))
+from orderchange_tbl
+where 
+recv_change_id = ''
+) as data_payment 
+
+FROM RecvOrder_Tbl a, Member_Tbl b, net_ij_tbl c
+, CARDAPPROVALREGISTHISTORY_TBL h
+, CARDREGISTHISTORY_TBL chnghst
+
+
+WHERE 
+a.kainno = b.kainno AND 
+a.NET_IJ_CD = c.NET_IJ_CD(+) AND 
+to_number(a.RECV_ORDER_ID) = h.ORDER_ID (+) AND 
+to_number(a.RECV_ORDER_ID) = chnghst.ORDER_ID (+) AND 
+$where
+)
+ ORDER BY order_dt desc
+ 
+if (count($change_kbn) > 0) {
+    $whereChangeKbn[] = 'change_kbn IN ('.implode(', ', $change_kbn).') ';
+    $sql = 'select * from ('.$sql.') where change_kbn IN ('.implode(', ', $change_kbn).') ';
+}

@@ -49,6 +49,57 @@ kingakuamount
 --ikusei_comment AS IKUSEI_COMMENT							
 --net_ij_rsn AS NET_IJ_INFO	
 
+
+//受区
+//会員番号
+//受付日
+//漢字氏名
+//カナ氏名
+//年号区分
+//生年月日
+//電話番号
+//本住所
+//住所非変換部
+//商品コード
+//商品名称10
+//商品レベル
+//商品詳細区分
+//数
+//購入点数
+//金額
+//消費税
+//合計
+//支払方法
+//支払回数
+//カード会社
+//カード番号
+//カード登録区分
+//有効期限
+//配達方法
+//時間指定
+//期日指定
+//別住所郵便番号
+//別住所
+//別住所電話番号
+//メールアドレス
+//携帯メールアドレス
+//発送注意対応内容メモ
+//配送先区分
+//その他住所郵便番号
+//その他住所
+//その他住所電話番号
+//配送先登録区分
+//その他非変換部
+//海外郵便番号
+//海外住所1
+//海外住所2
+//海外住所3
+//海外宛名
+//海外電話番号
+//配送要望メモ
+//育成コメント														
+
+
 Add Myself
 
 country_cd AS COUNTRY_CD
@@ -686,3 +737,428 @@ $sql  = "ON Re.enclos_cd10 = At10.att_cd ";
 $sql  = "LEFT JOIN m_item_dtl Spc ";
 $sql  = "ON Sh.item_cd = Spc.item_cd AND Sh.item_lvl = Spc.item_lvl ";
 
+	$sql  = "SELECT  ";
+	$sql .= "Re.odr_seq AS RECV_ORDER_ID, ";
+	$sql .= "Re.cust_no AS KAINNO, ";
+	$sql .= "Re.tel_no AS TEL_NO, ";
+	$sql .= "Re.pay_way_kbn AS PAYMENT_TYPE, ";
+	$sql .= "Re.pay_cnt AS PAYMENT_NUM, ";
+	$sql .= "Re.credit_card_no AS CC_NO, ";
+	$sql .= "Re.credit_card_no AS CC_NO, ";
+	$sql .= "Re.avail_term AS CC_TERM, ";
+	$sql .= "Re.card_input_kbn AS CC_REGIST_KBN, ";
+	$sql .= "Re.dlv_tm_kbn AS DELIVERY_TIME_TYPE, ";
+	$sql .= "We.another_adr AS B_KNJ_ADDRESS, ";
+	$sql .= "Re.dlv_req_memo AS DELIVERY_REQUEST, ";
+	$sql .= "Re.site_kbn AS SITE_KBN, ";
+	$sql .= "to_char(Re.dlv_req_dt, 'YYYY/MM/DD') AS DELIVERY_DT, ";
+	$sql .= "Re.dlv_to_kbn AS ANOTHER_ADDR_TYPE, ";
+	$sql .= "Re.other_non_chg_part AS ANOTHER_ADDR_NOT_CONV, ";
+	$sql .= "Re.other_adr_tel_no AS ANOTHER_TELNO, ";
+	$sql .= "Re.other_adr_post_no AS ANOTHER_POST_NO, ";
+	$sql .= "Re.dlv_to_input_kbn AS DELIVERY_REGIST_KBN, ";
+	$sql .= "Re.cvs_rcv_site_odr_no AS ECONORDER_ID, ";
+	$sql .= "Re.enclos_cd1 AS ENCLOSURE_CD1, ";
+	$sql .= "to_char(Re.acpt_dt_tm, 'YYYY/MM/DD HH24:MI:SS')  AS ORDER_DT, ";
+	$sql .= "Re.country_cd AS COUNTRY_CD, ";
+	$sql .= "Re.overseas_post_no AS POSTCD_FOREIGN, ";
+	$sql .= "Re.overseas_to_name AS COUNTRY_ADDRESSEE, ";
+	$sql .= "Re.overseas_adr_1 AS ADRS_FOREIGN1, ";
+	$sql .= "Re.overseas_adr_2 AS ADRS_FOREIGN2, ";
+	$sql .= "Re.overseas_adr_3 AS ADRS_FOREIGN3, ";
+	$sql .= "Re.overseas_tel_no AS TEL_NO_FOREIGN, ";
+	$sql .= "Re.ikusei_comment AS IKUSEI_COMMENT, ";
+	$sql .= "COALESCE(Re.tot_odr_amnt, 0) as ORDER_AMOUNT, ";
+	$sql .= "COALESCE(Re.tot_odr_tax, 0) as ORDER_TAXRATE, ";
+	$sql .= "Re.ship_att_cd_1 AS SHIP_CAUTION3_CD, ";
+	$sql .= "Me.mail_adr AS EMAIL, ";
+	$sql .= "Me.mob_mail_adr AS M_EMAIL, ";
+	$sql .= "We.cust_name AS NAMEKANJI, ";
+	$sql .= "We.cust_name_kana AS NAMEKANA, ";
+	$sql .= "We.era_kbn AS NAMEOFERA, ";
+	$sql .= "We.birthday AS BIRTHDAY, ";
+	$sql .= "We.adr AS H_KNJ_ADDRESS, ";
+	$sql .= "We.adr_non_chg_part AS H_NOT_CONV, ";
+	$sql .= "We.another_adr_post_no AS B_POST_NO, ";
+	$sql .= "We.another_adr AS B_KNJ_ADDRESS, ";
+	$sql .= "We.another_adr_tel_no AS B_TEL_NO, ";
+	$sql .= "Cr.credit_card_corp_name AS COMPANYMEIFULL, ";
+	$sql .= "Sh.item_name_10 AS NAME10, ";
+	$sql .= "Sh.price AS TANKA, ";
+	$sql .= "Sh.item_name AS NAMEFULL, ";
+	$sql .= "Sh.item_lvl AS SHOHIN_LEVEL, ";
+	$sql .= "Ij.net_ju_rsn AS NET_ju_INFO, ";
+	$sql .= "At.att_cont as CAUTION, ";
+	$sql .= "At1.att_cont as ENCLOSURE1, ";
+	$sql .= "At2.att_cont as ENCLOSURE2, ";
+	$sql .= "At3.att_cont as ENCLOSURE3, ";
+	$sql .= "At4.att_cont as ENCLOSURE4, ";
+	$sql .= "At5.att_cont as ENCLOSURE5, ";
+	$sql .= "At6.att_cont as ENCLOSURE6, ";
+	$sql .= "At7.att_cont as ENCLOSURE7, ";
+	$sql .= "At8.att_cont as ENCLOSURE8, ";
+	$sql .= "At9.att_cont as ENCLOSURE9, ";
+	$sql .= "At10.att_cont as ENCLOSURE10, ";
+	$sql .= "Spc.item_dtl_kbn AS SHOHIN_KIND, ";
+	$sql .= "Pr.item_cd AS SHOHIN_CD, ";
+	$sql .= "Pr.num AS AMOUNT, ";
+	$sql .= "Pr.amnt AS PRICE, ";
+	$sql .= "( ";
+	$sql .= "select  ";
+	$sql .= "sum(CAST (s.price AS INTEGER) * r.amnt)  as wk_price  ";
+	$sql .= "from odr_d r ,m_item s , m_sys_set sy ";
+	$sql .= "where sy.site_kbn='1'  ";
+	$sql .= "and  r.item_cd  = s.item_cd  ";
+	$sql .= "and (  ";
+	$sql .= "( r.item_lvl is null and s.item_lvl is null )  ";
+	$sql .= "or ( r.item_lvl is not null and r.item_lvl = s.item_lvl )  ";
+	$sql .= ")  ";
+	$sql .= "and r.odr_seq = ".getSqlValue($recv_order_id) ;
+	$sql .= ") as PRICE2,  ";
+	$sql .= "(  ";
+	$sql .= "select sum( (CAST (s.price AS INTEGER) * r.amnt) * (sy.TAX_RATE) ) as wk_price  ";
+	$sql .= "from odr_d r ,m_item s , m_sys_set sy ";
+	$sql .= "where sy.site_kbn='1'  ";
+	$sql .= "and  r.item_cd  = s.item_cd  ";
+	$sql .= "and (  ";
+	$sql .= "( r.item_lvl is null and s.item_lvl is null )  ";
+	$sql .= "or ( r.item_lvl is not null and r.item_lvl = s.item_lvl )  ";
+	$sql .= ") ";
+	$sql .= "and r.odr_seq = ".getSqlValue($recv_order_id);
+	$sql .= ") as TAX ";
+	$sql .= "from f_odr Re ";
+	$sql .= "LEFT JOIN m_net_mbr Me ";
+	$sql .= "ON Re.cust_no = Me.cust_no ";
+	$sql .= "LEFT JOIN m_offline_data We ";
+	$sql .= "ON Me.cust_no = We.cust_no ";
+	$sql .= "LEFT JOIN m_credit_corp Cr ";
+	$sql .= "ON Re.credit_card_corp = Cr.credit_card_corp_cd ";
+	$sql .= "LEFT JOIN odr_d Pr ";
+	$sql .= "ON Re.odr_seq = Pr.odr_seq ";
+	$sql .= "LEFT JOIN m_item Sh  ";
+	$sql .= "ON Pr.item_cd = Sh.item_cd AND Pr.item_lvl = Sh.item_lvl AND "; 
+	$sql .= "((Pr.item_lvl is not null and Pr.item_lvl = Sh.item_lvl) or ";
+	$sql .= "(Pr.item_lvl is null and  Sh.item_lvl is null)) ";
+	$sql .= "LEFT JOIN m_net_ju_rsn Ij ";
+	$sql .= "ON Re.pend_cd = Ij.net_ju_cd ";
+	$sql .= "LEFT JOIN m_att At ";
+	$sql .= "ON Re.ship_att_cd_1 = At.att_cd ";
+	$sql .= "LEFT JOIN m_att At1 ";
+	$sql .= "ON Re.enclos_cd1 = At1.att_cd ";
+	$sql .= "LEFT JOIN m_att At2 ";
+	$sql .= "ON Re.enclos_cd2 = At2.att_cd ";
+	$sql .= "LEFT JOIN m_att At3 ";
+	$sql .= "ON Re.enclos_cd3 = At3.att_cd ";
+	$sql .= "LEFT JOIN m_att At4 ";
+	$sql .= "ON Re.enclos_cd4 = At4.att_cd ";
+	$sql .= "LEFT JOIN m_att At5 ";
+	$sql .= "ON Re.enclos_cd5 = At5.att_cd ";
+	$sql .= "LEFT JOIN m_att At6 ";
+	$sql .= "ON Re.enclos_cd6 = At6.att_cd ";
+	$sql .= "LEFT JOIN m_att At7 ";
+	$sql .= "ON Re.enclos_cd7 = At7.att_cd ";
+	$sql .= "LEFT JOIN m_att At8 ";
+	$sql .= "ON Re.enclos_cd8 = At8.att_cd ";
+	$sql .= "LEFT JOIN m_att At9 ";
+	$sql .= "ON Re.enclos_cd9 = At9.att_cd ";
+	$sql .= "LEFT JOIN m_att At10 ";
+	$sql .= "ON Re.enclos_cd10 = At10.att_cd ";
+	$sql .= "LEFT JOIN m_item_dtl Spc ";
+	$sql .= "ON Sh.item_cd = Spc.item_cd AND Sh.item_lvl = Spc.item_lvl ";
+	$sql .= " WHERE Re.odr_seq = ".getSqlValue($recv_order_id);		
+
+
+
+---- POSTGRESQL DB TEST
+
+    	SELECT  
+	Re.odr_seq AS RECV_ORDER_ID, 
+	Re.cust_no AS KAINNO, 
+	Re.tel_no AS TEL_NO, 
+	Re.pay_way_kbn AS PAYMENT_TYPE, 
+	Re.pay_cnt AS PAYMENT_NUM, 
+	Re.credit_card_no AS CC_NO, 
+	Re.credit_card_no AS CC_NO, 
+	Re.avail_term AS CC_TERM, 
+	Re.card_input_kbn AS CC_REGIST_KBN, 
+	Re.dlv_tm_kbn AS DELIVERY_TIME_TYPE, 
+	We.another_adr AS B_KNJ_ADDRESS, 
+	Re.dlv_req_memo AS DELIVERY_REQUEST, 
+	Re.site_kbn AS SITE_KBN, 
+	to_char(Re.dlv_req_dt, 'YYYY/MM/DD') AS DELIVERY_DT, 
+	Re.dlv_to_kbn AS ANOTHER_ADDR_TYPE, 
+	Re.other_non_chg_part AS ANOTHER_ADDR_NOT_CONV, 
+	Re.other_adr_tel_no AS ANOTHER_TELNO, 
+	Re.other_adr_post_no AS ANOTHER_POST_NO, 
+	Re.dlv_to_input_kbn AS DELIVERY_REGIST_KBN, 
+	Re.cvs_rcv_site_odr_no AS ECONORDER_ID, 
+	Re.enclos_cd1 AS ENCLOSURE_CD1, 
+	to_char(Re.acpt_dt_tm, 'YYYY/MM/DD HH24:MI:SS')  AS ORDER_DT, 
+	Re.country_cd AS COUNTRY_CD, 
+	Re.overseas_post_no AS POSTCD_FOREIGN, 
+	Re.overseas_to_name AS COUNTRY_ADDRESSEE, 
+	Re.overseas_adr_1 AS ADRS_FOREIGN1, 
+	Re.overseas_adr_2 AS ADRS_FOREIGN2, 
+	Re.overseas_adr_3 AS ADRS_FOREIGN3, 
+	Re.overseas_tel_no AS TEL_NO_FOREIGN, 
+	Re.ikusei_comment AS IKUSEI_COMMENT, 
+	COALESCE(Re.tot_odr_amnt, 0) as ORDER_AMOUNT, 
+	COALESCE(Re.tot_odr_tax, 0) as ORDER_TAXRATE, 
+	Re.ship_att_cd_1 AS SHIP_CAUTION3_CD, 
+	Me.mail_adr AS EMAIL, 
+	Me.mob_mail_adr AS M_EMAIL, 
+	We.cust_name AS NAMEKANJI, 
+	We.cust_name_kana AS NAMEKANA, 
+	We.era_kbn AS NAMEOFERA, 
+	We.birthday AS BIRTHDAY, 
+	We.adr AS H_KNJ_ADDRESS, 
+	We.adr_non_chg_part AS H_NOT_CONV, 
+	We.another_adr_post_no AS B_POST_NO, 
+	We.another_adr AS B_KNJ_ADDRESS, 
+	We.another_adr_tel_no AS B_TEL_NO, 
+	Cr.credit_card_corp_name AS COMPANYMEIFULL, 
+	Sh.item_name_10 AS NAME10, 
+	Sh.price AS TANKA, 
+	Sh.item_name AS NAMEFULL, 
+	Sh.item_lvl AS SHOHIN_LEVEL, 
+	Ij.net_ju_rsn AS NET_ju_INFO, 
+	At.att_cont as CAUTION, 
+	At1.att_cont as ENCLOSURE1, 
+	At2.att_cont as ENCLOSURE2, 
+	At3.att_cont as ENCLOSURE3, 
+	At4.att_cont as ENCLOSURE4, 
+	At5.att_cont as ENCLOSURE5, 
+	At6.att_cont as ENCLOSURE6, 
+	At7.att_cont as ENCLOSURE7, 
+	At8.att_cont as ENCLOSURE8, 
+	At9.att_cont as ENCLOSURE9, 
+	At10.att_cont as ENCLOSURE10, 
+	Spc.item_dtl_kbn AS SHOHIN_KIND, 
+	Pr.item_cd AS SHOHIN_CD, 
+	Pr.num AS AMOUNT, 
+	Pr.amnt AS PRICE, 
+	( 
+	select  
+	sum(CAST (s.price AS INTEGER) * r.amnt)  as wk_price  
+	from odr_d r ,m_item s , m_sys_set sy 
+	where sy.site_kbn='1'  
+	and  r.item_cd  = s.item_cd  
+	and (  
+	( r.item_lvl is null and s.item_lvl is null )  
+	or ( r.item_lvl is not null and r.item_lvl = s.item_lvl )  
+	)  
+	and r.odr_seq = ".getSqlValue($recv_order_id)
+	) as PRICE2,  
+	(  
+	select sum( (CAST (s.price AS INTEGER) * r.amnt) * (sy.TAX_RATE) ) as wk_price  
+	from odr_d r ,m_item s , m_sys_set sy 
+	where sy.site_kbn='1'  
+	and  r.item_cd  = s.item_cd  
+	and (  
+	( r.item_lvl is null and s.item_lvl is null )  
+	or ( r.item_lvl is not null and r.item_lvl = s.item_lvl )  
+	) 
+	and r.odr_seq = ".getSqlValue($recv_order_id
+	) as TAX 
+	from f_odr Re 
+	LEFT JOIN m_net_mbr Me 
+	ON Re.cust_no = Me.cust_no 
+	LEFT JOIN m_offline_data We 
+	ON Me.cust_no = We.cust_no 
+	LEFT JOIN m_credit_corp Cr 
+	ON Re.credit_card_corp = Cr.credit_card_corp_cd 
+	LEFT JOIN odr_d Pr 
+	ON Re.odr_seq = Pr.odr_seq 
+	LEFT JOIN m_item Sh  
+	ON Pr.item_cd = Sh.item_cd AND Pr.item_lvl = Sh.item_lvl AND 
+	((Pr.item_lvl is not null and Pr.item_lvl = Sh.item_lvl) or 
+	(Pr.item_lvl is null and  Sh.item_lvl is null)) 
+	LEFT JOIN m_net_ju_rsn Ij 
+	ON Re.pend_cd = Ij.net_ju_cd 
+	LEFT JOIN m_att At 
+	ON Re.ship_att_cd_1 = At.att_cd 
+	LEFT JOIN m_att At1 
+	ON Re.enclos_cd1 = At1.att_cd 
+	LEFT JOIN m_att At2 
+	ON Re.enclos_cd2 = At2.att_cd 
+	LEFT JOIN m_att At3 
+	ON Re.enclos_cd3 = At3.att_cd 
+	LEFT JOIN m_att At4 
+	ON Re.enclos_cd4 = At4.att_cd 
+	LEFT JOIN m_att At5 
+	ON Re.enclos_cd5 = At5.att_cd 
+	LEFT JOIN m_att At6 
+	ON Re.enclos_cd6 = At6.att_cd 
+	LEFT JOIN m_att At7 
+	ON Re.enclos_cd7 = At7.att_cd 
+	LEFT JOIN m_att At8 
+	ON Re.enclos_cd8 = At8.att_cd 
+	LEFT JOIN m_att At9 
+	ON Re.enclos_cd9 = At9.att_cd 
+	LEFT JOIN m_att At10 
+	ON Re.enclos_cd10 = At10.att_cd 
+	LEFT JOIN m_item_dtl Spc 
+	ON Sh.item_cd = Spc.item_cd AND Sh.item_lvl = Spc.item_lvl 
+	 WHERE Re.odr_seq = ".getSqlValue($recv_order_id)						
+
+
+
+---- ORACLE DB TEST
+
+	Re.kainno,
+	Re.tel_no,
+	Re.payment_type,
+	Re.payment_num,
+	Re.cc_no,
+	Re.cc_name,
+	Re.cc_term,
+    Re.cc_regist_kbn,
+    Re.CC_NO,
+    Re.BONUS_KBN,
+	Re.delivery_time_type,
+	Re.another_addr,
+	Re.delivery_request,
+	Re.site_kbn,
+	to_char(Re.delivery_dt, 'YYYY/MM/DD') as delivery_dt,
+	Re.another_addr_type,
+	Re.another_addr_not_conv,
+	Re.another_telno,
+	Re.another_post_no,
+	Re.delivery_regist_kbn,
+	Re.econorder_id,
+	Re.enclosure_cd1,
+	to_char(Re.order_dt, 'YYYY/MM/DD HH24:MI:SS') as order_dt,
+    Re.COUNTRY_CD,
+    Re.POSTCD_FOREIGN,
+    Re.COUNTRY_ADDRESSEE,
+    Re.ADRS_FOREIGN1,
+    Re.ADRS_FOREIGN2,
+    Re.ADRS_FOREIGN3,
+    Re.TEL_NO_FOREIGN,
+    Re.IKUSEI_COMMENT,
+    NVL(Re.TOTAL_ORDER_AMOUNT, 0) as ORDER_AMOUNT,
+    NVL(Re.TOTAL_ORDER_TAXRATE, 0) as ORDER_TAXRATE,
+	Re.INDIVNAMESENDER_FLG,
+    Me.email,
+	Me.m_email,
+    We.namekanji,
+    We.NAMEOFERA,
+    We.birthday,
+    We.H_KNJ_ADDRESS,
+    We.H_NOT_CONV,
+	We.namekana,
+	We.b_post_no,
+	We.b_knj_address,
+	We.b_tel_no,
+    Cr.companymeifull,
+    Pr.shohin_cd,
+	Pr.amount,
+	Pr.price,
+    Sh.name10,
+	Sh.NAMEFULL,
+    Sh.SHOHIN_LEVEL,
+    Ij.net_ij_info,
+    At.attention as caution,
+    Re.SHIP_CAUTION_CD1 AS SHIP_CAUTION3_CD,
+    At1.attention as enclosure1,
+    At2.attention as enclosure2,
+    At3.attention as enclosure3,
+    At4.attention as enclosure4,
+    At5.attention as enclosure5,
+    At6.attention as enclosure6,
+    At7.attention as enclosure7,
+    At8.attention as enclosure8,
+    At9.attention as enclosure9,
+    At10.attention as enclosure10,
+    Spc.SHOHIN_KIND,
+    ( 
+    select sum( (s.TANKA * r.amount) ) as wk_price 
+    from RecvProduct_Tbl r ,sqlshohin_tbl s , system_tbl sy
+    where sy.SITE_KBN='1' 
+    and  r.SHOHIN_CD  = s.SHOHIN_CD 
+    and ( 
+        ( r.SHOHIN_LEVEL is null     and s.SHOHIN_LEVEL is null ) 
+     or ( r.SHOHIN_LEVEL is not null and r.SHOHIN_LEVEL = s.SHOHIN_LEVEL ) 
+    ) 
+    and r.recv_order_id = ''
+    ) as price2, 
+    ( 
+    select sum( (s.TANKA * r.amount) * (sy.TAX_RATE) ) as wk_price 
+    from RecvProduct_Tbl r ,sqlshohin_tbl s , system_tbl sy
+    where sy.SITE_KBN='1' 
+    and  r.SHOHIN_CD  = s.SHOHIN_CD 
+    and ( 
+        ( r.SHOHIN_LEVEL is null     and s.SHOHIN_LEVEL is null ) 
+     or ( r.SHOHIN_LEVEL is not null and r.SHOHIN_LEVEL = s.SHOHIN_LEVEL ) 
+    ) 
+    and r.recv_order_id = ''
+    ) as tax 
+    FROM
+    RecvOrder_Tbl Re
+    LEFT JOIN
+	Member_Tbl Me
+    ON Re.kainno = Me.kainno
+    LEFT JOIN
+    WebProfile_Tbl We
+    ON Me.kainno = We.kainno
+    LEFT JOIN
+    Credit_Tbl Cr
+    ON Re.cc_type = Cr.company_cd
+    LEFT JOIN
+    RecvProduct_Tbl Pr
+    ON Re.recv_order_id = Pr.recv_order_id 
+    LEFT JOIN
+    SqlShohin_Tbl Sh
+    ON 
+    Pr.shohin_cd = Sh.shohin_cd AND ((Pr.shohin_level is not null and Pr.shohin_level = Sh.shohin_level) or (Pr.shohin_level is null and  Sh.shohin_level is null))
+    LEFT JOIN NET_IJ_Tbl Ij
+    ON Re.net_ij_cd = Ij.net_ij_cd
+    ATTENTION_TBL At
+    ON to_number(Re.ship_caution_cd1) = to_number(At.attention_cd)
+    LEFT JOIN 
+    ATTENTION_TBL At1
+    ON to_number(Re.enclosure_cd1) = to_number(At1.attention_cd)
+    LEFT JOIN
+    ATTENTION_TBL At2
+    ON to_number(Re.enclosure_cd2) = to_number(At2.attention_cd)
+    LEFT JOIN
+    ATTENTION_TBL At3
+    ON to_number(Re.enclosure_cd3) = to_number(At3.attention_cd)
+    LEFT JOIN
+    ATTENTION_TBL At4
+    ON to_number(Re.enclosure_cd4) = to_number(At4.attention_cd)
+    LEFT JOIN
+    ATTENTION_TBL At5
+    ON to_number(Re.enclosure_cd5) = to_number(At5.attention_cd)
+    LEFT JOIN
+    ATTENTION_TBL At6
+    ON to_number(Re.enclosure_cd6) = to_number(At6.attention_cd)
+    LEFT JOIN
+    ATTENTION_TBL At7
+    ON to_number(Re.enclosure_cd7) = to_number(At7.attention_cd)
+    LEFT JOIN
+    ATTENTION_TBL At8
+    ON to_number(Re.enclosure_cd8) = to_number(At8.attention_cd)
+    LEFT JOIN
+    ATTENTION_TBL At9
+    ON to_number(Re.enclosure_cd9) = to_number(At9.attention_cd)
+    LEFT JOIN
+    ATTENTION_TBL At10
+    ON to_number(Re.enclosure_cd10) = to_number(At10.attention_cd)
+    LEFT JOIN
+    SHOHINPC_TBL Spc
+    ON
+    Sh.SHOHIN_CD = Spc.SHOHIN_CD AND Sh.SHOHIN_LEVEL = Spc.SHOHIN_LEVEL
+WHERE Re.recv_order_id = ''
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+
+    

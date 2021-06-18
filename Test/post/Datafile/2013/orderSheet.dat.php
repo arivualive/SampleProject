@@ -211,139 +211,229 @@
 	//▲2011/08/23 A-05825 【進DW】9月22日開始商品リニューアル対応（ec-one yoshii）
 
 	$sql  = "SELECT  ";
-	$sql  = "Re.cust_no AS KAINNO, ";
-	$sql  = "Re.tel_no AS TEL_NO, ";
-	$sql  = "Re.pay_way_kbn AS PAYMENT_TYPE, ";
-	$sql  = "Re.pay_cnt AS PAYMENT_NUM, ";
-	$sql  = "Re.credit_card_no AS CC_NO, ";
-	$sql  = "Re.credit_card_no AS CC_NO, ";
-	$sql  = "Re.avail_term AS CC_TERM, ";
-	$sql  = "Re.card_input_kbn AS CC_REGIST_KBN, ";
-	$sql  = "Re.dlv_tm_kbn AS DELIVERY_TIME_TYPE, ";
-	$sql  = "We.another_adr AS B_KNJ_ADDRESS, ";
-	$sql  = "Re.dlv_req_memo AS DELIVERY_REQUEST, ";
-	$sql  = "Re.site_kbn AS SITE_KBN, ";
-	$sql  = "to_char(Re.dlv_req_dt, 'YYYY/MM/DD') AS DELIVERY_DT, ";
-	$sql  = "Re.dlv_to_kbn AS ANOTHER_ADDR_TYPE, ";
-	$sql  = "Re.other_non_chg_part AS ANOTHER_ADDR_NOT_CONV, ";
-	$sql  = "Re.other_adr_tel_no AS ANOTHER_TELNO, ";
-	$sql  = "Re.other_adr_post_no AS ANOTHER_POST_NO, ";
-	$sql  = "Re.dlv_to_input_kbn AS DELIVERY_REGIST_KBN, ";
-	$sql  = "Re.cvs_rcv_site_odr_no AS ECONORDER_ID, ";
-	$sql  = "Re.enclos_cd1 AS ENCLOSURE_CD1, ";
-	$sql  = "to_char(Re.acpt_dt_tm, 'YYYY/MM/DD HH24:MI:SS')  AS ORDER_DT, ";
-	$sql  = "Re.country_cd AS COUNTRY_CD, ";
-	$sql  = "Re.overseas_post_no AS POSTCD_FOREIGN, ";
-	$sql  = "Re.overseas_to_name AS COUNTRY_ADDRESSEE, ";
-	$sql  = "Re.overseas_adr_1 AS ADRS_FOREIGN1, ";
-	$sql  = "Re.overseas_adr_2 AS ADRS_FOREIGN2, ";
-	$sql  = "Re.overseas_adr_3 AS ADRS_FOREIGN3, ";
-	$sql  = "Re.overseas_tel_no AS TEL_NO_FOREIGN, ";
-	$sql  = "Re.ikusei_comment AS IKUSEI_COMMENT, ";
-	$sql  = "COALESCE(Re.tot_odr_amnt, 0) as ORDER_AMOUNT, ";
-	$sql  = "COALESCE(Re.tot_odr_tax, 0) as ORDER_TAXRATE, ";
-	$sql  = "Re.ship_att_cd_1 AS SHIP_CAUTION3_CD, ";
-	$sql  = "Me.mail_adr AS EMAIL, ";
-	$sql  = "Me.mob_mail_adr AS M_EMAIL, ";
-	$sql  = "We.cust_name AS NAMEKANJI, ";
-	$sql  = "We.cust_name_kana AS NAMEKANA, ";
-	$sql  = "We.era_kbn AS NAMEOFERA, ";
-	$sql  = "We.birthday AS BIRTHDAY, ";
-	$sql  = "We.adr AS H_KNJ_ADDRESS, ";
-	$sql  = "We.adr_non_chg_part AS H_NOT_CONV, ";
-	$sql  = "We.another_adr_post_no AS B_POST_NO, ";
-	$sql  = "We.another_adr AS B_KNJ_ADDRESS, ";
-	$sql  = "We.another_adr_tel_no AS B_TEL_NO, ";
-	$sql  = "Cr.credit_card_corp_name AS COMPANYMEIFULL, ";
-	$sql  = "Sh.item_name_10 AS NAME10, ";
-	$sql  = "Sh.price AS TANKA, ";
-	$sql  = "Sh.item_name AS NAMEFULL, ";
-	$sql  = "Sh.item_lvl AS SHOHIN_LEVEL, ";
-	$sql  = "Ij.net_ij_rsn AS NET_IJ_INFO, ";
-	$sql  = "At.att_cont as CAUTION, ";
-	$sql  = "At1.att_cont as ENCLOSURE1, ";
-	$sql  = "At2.att_cont as ENCLOSURE2, ";
-	$sql  = "At3.att_cont as ENCLOSURE3, ";
-	$sql  = "At4.att_cont as ENCLOSURE4, ";
-	$sql  = "At5.att_cont as ENCLOSURE5, ";
-	$sql  = "At6.att_cont as ENCLOSURE6, ";
-	$sql  = "At7.att_cont as ENCLOSURE7, ";
-	$sql  = "At8.att_cont as ENCLOSURE8, ";
-	$sql  = "At9.att_cont as ENCLOSURE9, ";
-	$sql  = "At10.att_cont as ENCLOSURE10, ";
-	$sql  = "Spc.item_dtl_kbn AS SHOHIN_KIND, ";
-	$sql  = "Pr.item_cd AS SHOHIN_CD, ";
-	$sql  = "Pr.num AS AMOUNT, ";
-	$sql  = "Pr.amnt AS PRICE, ";
-	$sql  = "( ";
-	$sql  = "select  ";
-	$sql  = "sum(CAST (s.price AS INTEGER) * r.amnt)  as wk_price  ";
-	$sql  = "from odr_d r ,m_item s , m_sys_set sy ";
-	$sql  = "where sy.site_kbn='1'  ";
-	$sql  = "and  r.item_cd  = s.item_cd  ";
-	$sql  = "and (  ";
-	$sql  = "( r.item_lvl is null and s.item_lvl is null )  ";
-	$sql  = "or ( r.item_lvl is not null and r.item_lvl = s.item_lvl )  ";
-	$sql  = ")  ";
-	$sql  = "and r.odr_seq = Re.odr_seq ";
-	$sql  = ") as PRICE2,  ";
-	$sql  = "(  ";
-	$sql  = "select sum( (CAST (s.price AS INTEGER) * r.amnt) * (sy.TAX_RATE) ) as wk_price  ";
-	$sql  = "from odr_d r ,m_item s , m_sys_set sy ";
-	$sql  = "where sy.site_kbn='1'  ";
-	$sql  = "and  r.item_cd  = s.item_cd  ";
-	$sql  = "and (  ";
-	$sql  = "( r.item_lvl is null and s.item_lvl is null )  ";
-	$sql  = "or ( r.item_lvl is not null and r.item_lvl = s.item_lvl )  ";
-	$sql  = ") ";
-	$sql  = "and r.odr_seq = Re.odr_seq ";
-	$sql  = ") as TAX ";
-	$sql  = "from f_odr Re ";
-	$sql  = "LEFT JOIN m_net_mbr Me ";
-	$sql  = "ON Re.cust_no = Me.cust_no ";
-	$sql  = "LEFT JOIN m_offline_data We ";
-	$sql  = "ON Me.cust_no = We.cust_no ";
-	$sql  = "LEFT JOIN m_credit_corp Cr ";
-	$sql  = "ON Re.credit_card_corp = Cr.credit_card_corp_cd ";
-	$sql  = "LEFT JOIN odr_d Pr ";
-	$sql  = "ON Re.odr_seq = Pr.odr_seq ";
-	$sql  = "LEFT JOIN m_item Sh  ";
-	$sql  = "ON Pr.item_cd = Sh.item_cd AND Pr.item_lvl = Sh.item_lvl AND "; 
-	$sql  = "((Pr.item_lvl is not null and Pr.item_lvl = Sh.item_lvl) or ";
-	$sql  = "(Pr.item_lvl is null and  Sh.item_lvl is null)) ";
-	$sql  = "LEFT JOIN m_net_ij_rsn Ij ";
-	$sql  = "ON Re.pend_cd = Ij.net_ij_cd ";
-	$sql  = "LEFT JOIN m_att At ";
-	$sql  = "ON Re.ship_att_cd_1 = At.att_cd ";
-	$sql  = "LEFT JOIN m_att At1 ";
-	$sql  = "ON Re.enclos_cd1 = At1.att_cd ";
-	$sql  = "LEFT JOIN m_att At2 ";
-	$sql  = "ON Re.enclos_cd2 = At2.att_cd ";
-	$sql  = "LEFT JOIN m_att At3 ";
-	$sql  = "ON Re.enclos_cd3 = At3.att_cd ";
-	$sql  = "LEFT JOIN m_att At4 ";
-	$sql  = "ON Re.enclos_cd4 = At4.att_cd ";
-	$sql  = "LEFT JOIN m_att At5 ";
-	$sql  = "ON Re.enclos_cd5 = At5.att_cd ";
-	$sql  = "LEFT JOIN m_att At6 ";
-	$sql  = "ON Re.enclos_cd6 = At6.att_cd ";
-	$sql  = "LEFT JOIN m_att At7 ";
-	$sql  = "ON Re.enclos_cd7 = At7.att_cd ";
-	$sql  = "LEFT JOIN m_att At8 ";
-	$sql  = "ON Re.enclos_cd8 = At8.att_cd ";
-	$sql  = "LEFT JOIN m_att At9 ";
-	$sql  = "ON Re.enclos_cd9 = At9.att_cd ";
-	$sql  = "LEFT JOIN m_att At10 ";
-	$sql  = "ON Re.enclos_cd10 = At10.att_cd ";
-	$sql  = "LEFT JOIN m_item_dtl Spc ";
-	$sql  = "ON Sh.item_cd = Spc.item_cd AND Sh.item_lvl = Spc.item_lvl ";
-	$sql  = "WHERE Re.odr_seq = ".getSqlValue($recv_order_id);
+	//受区
+	$sql .= "Re.site_kbn AS SITE_KBN, ";
+	//会員番号
+	$sql .= "Re.cust_no AS KAINNO, ";
+	//受付日
+	$sql .= "to_char(Re.acpt_dt_tm, 'YYYY/MM/DD HH24:MI:SS')  AS ORDER_DT, ";
+	//漢字氏名
+	$sql .= "We.cust_name AS NAMEKANJI, ";
+	//カナ氏名
+	$sql .= "We.cust_name_kana AS NAMEKANA, ";
+	//年号区分
+	$sql .= "We.era_kbn AS NAMEOFERA, ";
+	//生年月日
+	$sql .= "We.birthday AS BIRTHDAY, ";
+	//電話番号
+	$sql .= "Re.tel_no AS TEL_NO, ";
+	//本住所
+	$sql .= "We.adr AS H_KNJ_ADDRESS, ";
+	//住所非変換部
+	$sql .= "We.adr_non_chg_part AS H_NOT_CONV, ";
+	//商品コード
+	$sql .= "Pr.item_cd AS SHOHIN_CD, ";
+	//商品名称10
+	$sql .= "Sh.item_name_10 AS NAME10, ";
+	//商品レベル
+	$sql .= "Sh.item_lvl AS SHOHIN_LEVEL, ";
+	//商品詳細区分
+	$sql .= "Spc.item_dtl_kbn AS SHOHIN_KIND, ";
+	//支払方法
+	$sql .= "Re.pay_way_kbn AS PAYMENT_TYPE, ";
+	//支払回数
+	$sql .= "Re.pay_cnt AS PAYMENT_NUM, ";
+	//カード会社
+	$sql .= "Cr.credit_card_corp_name AS COMPANYMEIFULL, ";
+	//カード番号
+	$sql .= "Re.credit_card_no AS CC_NO, ";
+	//カード登録区分
+	$sql .= "Re.card_input_kbn AS CC_REGIST_KBN, ";
+	//有効期限
+	$sql .= "Re.avail_term AS CC_TERM, ";
+	//配達方法
+	$sql .= "Re.cvs_rcv_site_odr_no AS ECONORDER_ID, ";
+	//時間指定
+	$sql .= "Re.dlv_tm_kbn AS DELIVERY_TIME_TYPE, ";
+	//期日指定
+	$sql .= "to_char(Re.dlv_req_dt, 'YYYY/MM/DD') AS DELIVERY_DT, ";
+	//別住所郵便番号
+	$sql .= "We.another_adr_post_no AS B_POST_NO, ";
+	//別住所
+	$sql .= "We.another_adr AS B_KNJ_ADDRESS, ";
+	//別住所電話番号
+	$sql .= "We.another_adr_tel_no AS B_TEL_NO, ";
+	//メールアドレス
+	$sql .= "Me.mail_adr AS EMAIL, ";
+	//携帯メールアドレス	
+	$sql .= "Me.mob_mail_adr AS M_EMAIL, ";
+	//発送注意対応内容メモ
+	
+	//配送先区分
+	$sql .= "Re.ship_att_cd_1 AS SHIP_CAUTION3_CD, ";
+	//その他住所郵便番号
+	$sql .= "Re.other_adr_post_no AS ANOTHER_POST_NO, ";
+	//その他住所
+	//その他住所電話番号
+	$sql .= "Re.other_adr_tel_no AS ANOTHER_TELNO, ";
+	//配送先登録区分
+	$sql .= "Re.dlv_to_kbn AS ANOTHER_ADDR_TYPE, ";
+	//その他非変換部
+	$sql .= "Re.dlv_to_input_kbn AS DELIVERY_REGIST_KBN, ";
+	//海外郵便番号
+	$sql .= "Re.overseas_post_no AS POSTCD_FOREIGN, ";
+	//海外住所1
+	$sql .= "Re.overseas_adr_1 AS ADRS_FOREIGN1, ";
+	//海外住所2
+	$sql .= "Re.overseas_adr_2 AS ADRS_FOREIGN2, ";
+	//海外住所3
+	$sql .= "Re.overseas_adr_3 AS ADRS_FOREIGN3, ";
+	//海外宛名
+	$sql .= "Re.overseas_to_name AS COUNTRY_ADDRESSEE, ";
+	//海外電話番号
+	$sql .= "Re.overseas_tel_no AS TEL_NO_FOREIGN, ";
+	//配送要望メモ
+	$sql .= "Re.dlv_req_memo AS DELIVERY_REQUEST, ";
+	//育成コメント
+	$sql .= "Re.ikusei_comment AS IKUSEI_COMMENT, ";
+	//ネットIJ理由
+	$sql .= "Ij.net_ju_rsn AS NET_IJ_INFO, ";
+
+	$sql .= "Re.odr_seq AS RECV_ORDER_ID, ";
+	$sql .= "Re.country_cd AS COUNTRY_CD, ";
+	$sql .= "We.another_adr AS B_KNJ_ADDRESS, ";
+	$sql .= "Re.other_non_chg_part AS ANOTHER_ADDR_NOT_CONV, ";
+	$sql .= "Re.enclos_cd1 AS ENCLOSURE_CD1, ";
+	$sql .= "Sh.price AS TANKA, ";
+	$sql .= "Sh.item_name AS NAMEFULL, ";
+	$sql .= "At.att_cont as CAUTION, ";
+	$sql .= "At1.att_cont as ENCLOSURE1, ";
+	$sql .= "At2.att_cont as ENCLOSURE2, ";
+	$sql .= "At3.att_cont as ENCLOSURE3, ";
+	$sql .= "At4.att_cont as ENCLOSURE4, ";
+	$sql .= "At5.att_cont as ENCLOSURE5, ";
+	$sql .= "At6.att_cont as ENCLOSURE6, ";
+	$sql .= "At7.att_cont as ENCLOSURE7, ";
+	$sql .= "At8.att_cont as ENCLOSURE8, ";
+	$sql .= "At9.att_cont as ENCLOSURE9, ";
+	$sql .= "At10.att_cont as ENCLOSURE10, ";
+	$sql .= "COALESCE(Re.tot_odr_amnt, 0) as ORDER_AMOUNT, ";
+	$sql .= "COALESCE(Re.tot_odr_tax, 0) as ORDER_TAXRATE, ";
+	//数
+	$sql .= "Pr.num AS AMOUNT, ";
+	//購入点数
+	$sql .= "Pr.amnt AS PRICE, ";
+	$sql .= "( ";
+	$sql .= "select  ";
+	$sql .= "sum(CAST (s.price AS INTEGER) * r.num)  as wk_price  ";
+	$sql .= "from odr_d r ,m_item s , m_sys_set sy ";
+	$sql .= "where sy.site_kbn='1'  ";
+	$sql .= "and  r.item_cd  = s.item_cd  ";
+	$sql .= "and (  ";
+	$sql .= "((r.item_lvl is null or (COALESCE(r.item_lvl, '') = '' )) and (s.item_lvl is null or (COALESCE(s.item_lvl, '') = '' )))  "; 
+	$sql .= "or ((r.item_lvl is not null and trim(r.item_lvl) != '') and r.item_lvl = s.item_lvl )  ";
+	$sql .= ")  ";
+	$sql .= "and r.odr_seq = ".getSqlValue($recv_order_id) ;
+	
+	$sql .= ") as PRICE2,  ";
+	$sql .= "(  ";
+	$sql .= "select sum( (CAST (s.price AS INTEGER) * r.num) * (sy.TAX_RATE) ) as wk_price  ";
+	$sql .= "from odr_d r ,m_item s , m_sys_set sy ";
+	$sql .= "where sy.site_kbn='1'  ";
+	$sql .= "and  r.item_cd  = s.item_cd  ";
+	$sql .= "and (  ";
+	$sql .= "((r.item_lvl is null or (COALESCE(r.item_lvl, '') = '' )) and (s.item_lvl is null or (COALESCE(s.item_lvl, '') = '' )))  ";
+	$sql .= "or ((r.item_lvl is not null and trim(r.item_lvl) != '') and r.item_lvl = s.item_lvl )  ";
+	$sql .= ") ";
+	$sql .= "and r.odr_seq = ".getSqlValue($recv_order_id);
+	
+	$sql .= ") as TAX ";
+	//注文伝票
+	$sql .= "from f_odr Re ";
+	//ネット会員台帳
+	$sql .= "LEFT JOIN m_net_mbr Me ";
+	//注文伝票.会員番号=ネット会員台帳.会員番号（LEFT JOIN）
+	$sql .= "ON Re.cust_no = Me.cust_no ";
+	//オフライン用データ台帳
+	$sql .= "LEFT JOIN m_offline_data We ";
+	//ネット会員台帳.会員番号=オフライン用データ台帳.会員番号（LEFT JOIN）
+	$sql .= "ON Me.cust_no = We.cust_no ";
+	//クレジット会社台帳
+	$sql .= "LEFT JOIN m_credit_corp Cr ";
+	//注文伝票.クレジットカード会社=クレジット会社台帳.クレジットカード会社コード（LEFT JOIN）
+	$sql .= "ON Re.credit_card_corp = Cr.credit_card_corp_cd ";
+	//注文明細
+	$sql .= "LEFT JOIN odr_d Pr ";
+	//注文伝票.受注連番=注文明細.受注連番（LEFT JOIN）
+	$sql .= "ON Re.odr_seq = Pr.odr_seq ";
+	//商品台帳
+	$sql .= "LEFT JOIN m_item Sh  ";
+	//注文明細  LEFT JOIN 商品台帳 注文明細.商品コード=商品台帳.商品コード AND 
+	$sql .= "ON Pr.item_cd = Sh.item_cd AND Pr.item_lvl = Sh.item_lvl AND "; 
+	//((注文明細.商品レベル IS NOT NULL AND 注文明細.商品レベル=商品台帳.商品レベル) OR
+	$sql .= "(((Pr.item_lvl is not null and trim(Pr.item_lvl) != '') and Pr.item_lvl = Sh.item_lvl) or ";
+	//(注文明細.商品レベル IS NULL AND 商品台帳.商品レベル IS NULL))
+	$sql .= "(Pr.item_lvl is null or (COALESCE(Pr.item_lvl, '') = '' )) and (Sh.item_lvl is null or (COALESCE(Sh.item_lvl, '') = '' ))) ";
+	//ネットIJ理由台帳
+	$sql .= "LEFT JOIN m_net_ju_rsn Ij ";
+	//注文伝票.保留コード=ネットIJ理由台帳.ネットIJコード（LEFT JOIN）
+	$sql .= "ON Re.pend_cd = Ij.net_ju_cd ";
+	//発送注意台帳
+	$sql .= "LEFT JOIN m_att At ";
+	//注文伝票.発送注意コード1=発送注意台帳.発送注意コード（LEFT JOIN）
+	$sql .= "ON Re.ship_att_cd_1 = At.att_cd ";
+	//発送注意台帳1
+	$sql .= "LEFT JOIN m_att At1 ";
+	//注文伝票.同封物コード1=発送注意台帳1.発送注意コード（LEFT JOIN）
+	$sql .= "ON Re.enclos_cd1 = At1.att_cd ";
+	//発送注意台帳2
+	$sql .= "LEFT JOIN m_att At2 ";
+	//注文伝票.同封物コード2=発送注意台帳2.発送注意コード（LEFT JOIN）
+	$sql .= "ON Re.enclos_cd2 = At2.att_cd ";
+	//発送注意台帳3
+	$sql .= "LEFT JOIN m_att At3 ";
+	//注文伝票.同封物コード3=発送注意台帳3.発送注意コード（LEFT JOIN
+	$sql .= "ON Re.enclos_cd3 = At3.att_cd ";
+	//発送注意台帳4
+	$sql .= "LEFT JOIN m_att At4 ";
+	//注文伝票.同封物コード4=発送注意台帳4.発送注意コード（LEFT JOIN）
+	$sql .= "ON Re.enclos_cd4 = At4.att_cd ";
+	//発送注意台帳5
+	$sql .= "LEFT JOIN m_att At5 ";
+	//注文伝票.同封物コード5=発送注意台帳5.発送注意コード（LEFT JOIN）
+	$sql .= "ON Re.enclos_cd5 = At5.att_cd ";
+	//発送注意台帳6
+	$sql .= "LEFT JOIN m_att At6 ";
+	//注文伝票.同封物コード6=発送注意台帳6.発送注意コード（LEFT JOIN）
+	$sql .= "ON Re.enclos_cd6 = At6.att_cd ";
+	//発送注意台帳7
+	$sql .= "LEFT JOIN m_att At7 ";
+	//注文伝票.同封物コード7=発送注意台帳7.発送注意コード（LEFT JOIN）
+	$sql .= "ON Re.enclos_cd7 = At7.att_cd ";
+	//発送注意台帳8
+	$sql .= "LEFT JOIN m_att At8 ";
+	//注文伝票.同封物コード8=発送注意台帳.8発送注意コード（LEFT JOIN）
+	$sql .= "ON Re.enclos_cd8 = At8.att_cd ";
+	//発送注意台帳9
+	$sql .= "LEFT JOIN m_att At9 ";
+	//注文伝票.同封物コード9=発送注意台帳.9発送注意コード（LEFT JOIN）
+	$sql .= "ON Re.enclos_cd9 = At9.att_cd ";
+	//発送注意台帳10
+	$sql .= "LEFT JOIN m_att At10 ";
+	//注文伝票.同封物コード10=発送注意台帳10.発送注意コード（LEFT JOIN）
+	$sql .= "ON Re.enclos_cd10 = At10.att_cd ";
+	//商品詳細台帳
+	$sql .= "LEFT JOIN m_item_dtl Spc ";
+	//商品台帳 LEFT JOIN 商品詳細台帳 ON 商品台帳.商品コード=商品詳細台帳.商品コード AND 商品台帳.商品レベル=商品詳細台帳.商品レベル
+	$sql .= "ON Sh.item_cd = Spc.item_cd AND Sh.item_lvl = Spc.item_lvl ";
+	//注文伝票.受注連番=引数.受注連番
+	$sql .= " WHERE Re.odr_seq = ".getSqlValue($recv_order_id);
 	
     //SQLを実行する
     $result = dbQuery($con_utl, $sql);
 
     //データカウントを取得する
-    $rows = getNumRows($result, $arr_utl);
+    $rows = getNumRows($result);
 
 	$counter_p = 0;
 	$counter_d = 0;
@@ -356,7 +446,7 @@
 	$prsct = array_fill(0, 10, '');
 
 	for ($i = 0; $i < $rows; $i++) {
-		$row = dbFetchRow($result, $i, $arr_utl);
+		$row = dbFetchRow($result, $i);
 		$tmp = array();
 
 		$tmp['kainno']   = getHtmlEscapedString($row['KAINNO']);					//会員ｺｰﾄﾞ
@@ -376,10 +466,10 @@
         }
         $tmp['nameofera'] = $nameofera;
         //生年月日
-        $birthday = getHtmlEscapedString(ssk_decrypt($row['BIRTHDAY']));
+        $birthday = getHtmlEscapedString($row['BIRTHDAY']);
         $tmp['birthday']     = substr($birthday,0,2).'.'.substr($birthday,2,2).'.'.substr($birthday,4,2);
         //住所
-        $tmp['address']     = getHtmlEscapedString(ssk_decrypt($row['H_KNJ_ADDRESS'])); //住所
+        $tmp['address']     = getHtmlEscapedString($row['H_KNJ_ADDRESS']); //住所
         //$tmp['address_not']     = getHtmlEscapedString(ssk_decrypt($row['H_NOT_CONV'])); //非変換部住所
 		$tmp['address_not']     = getHtmlEscapedString($row['H_NOT_CONV']);
         ////2010/10/07 EC-One hatano 項目追加 ADD End
