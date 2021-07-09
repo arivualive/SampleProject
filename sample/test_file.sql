@@ -2407,3 +2407,310 @@ $sql .= "WHERE ";
     $sql .= ")  ";
 $sql .= "ORDER BY ";
     $sql .= "order_dt DESC ";
+
+
+
+
+$sql = "SELECT ";
+    $sql .= "*  ";
+$sql .= "FROM ";
+    $sql .= "(  ";
+        $sql .= "SELECT ";
+            $sql .= "od.odr_seq AS RECV_ORDER_ID ";
+            $sql .= ", od.acpt_dt_tm AS ORDER_DT ";
+            $sql .= ", od.cust_no AS KAINNO ";
+            $sql .= ", nm.cust_name AS KAIN_NAME ";
+            $sql .= ", ij.net_ju_cd AS NET_IJ_CD ";
+            $sql .= ", ij.net_ju_rsn AS NET_IJ_INFO ";
+            $sql .= ", od.odr_stat_kbn AS ORDER_STATUS ";
+            $sql .= ", od.core_sys_kbn AS HOST_FLG ";
+            $sql .= ", od.rcv_form_output_kbn AS PRINT_FLG ";
+            $sql .= ", ac.odr_kbn AS ORDER_KBN ";
+            $sql .= ", (  ";
+                $sql .= "SELECT ";
+                    $sql .= "r.item_kbn  ";
+                $sql .= "from ";
+                    $sql .= "f_odr_d r ";
+                    $sql .= ", m_item s ";
+                    $sql .= ", m_sys_set sy  ";
+                $sql .= "where ";
+                    $sql .= "sy.site_kbn = '1'  ";
+                    $sql .= "and r.item_cd = s.item_cd  ";
+                    $sql .= "and (  ";
+                        $sql .= "(r.item_lvl is null and s.item_lvl is null)  ";
+                        $sql .= "or (  ";
+                            $sql .= "r.item_lvl is not null  ";
+                            $sql .= "and r.item_lvl = s.item_lvl ";
+                        $sql .= ") ";
+                    $sql .= ")  ";
+                    $sql .= "and r.odr_seq = od.odr_seq LIMIT 1 ";
+              $sql .= ") as SHOHIN_TYPE  ";
+            $sql .= ", od.tel_no AS TEL_NO ";
+            $sql .= ", (case when od.site_kbn = '1' then nm.mail_adr else nm.mob_mail_adr end) AS EMAIL ";
+            $sql .= ", od.mbr_kbn AS KAIN_KBN ";
+            $sql .= ", od.net_mbr_cd AS NETMEMBER_ID ";
+            $sql .= ", od.site_kbn AS SITE_KBN ";
+            $sql .= ", od.gift_flg AS GIFT_FLG ";
+            $sql .= ", od.credit_card_no AS CC_NO ";
+            $sql .= ", od.avail_term AS CC_TERM ";
+            $sql .= ", ac.mbr_cd AS KAIIN_ID ";
+            $sql .= ", ac.mbr_pwd AS KAIIN_PASS ";
+            $sql .= ", ci.mbr_cd AS CHNG_HIST_KAIIN_ID ";
+            $sql .= ", ci.mbr_pwd AS CHNG_HIST_KAIIN_PASS ";
+            $sql .= ", pay.trade_cd AS ACCESS_ID ";
+            $sql .= ", pay.trade_pwd AS ACCESS_PASS ";
+            $sql .= ", pay.order_cd AS ORDER_ID ";
+            $sql .= ", pay.e_pay_account_cd AS EPAYMENT_ID ";
+            $sql .= ", od.route_dtl_kbn AS ODRROUTEDTLKBN ";
+            $sql .= ", ac.hist_seq AS REGIST_HISTORY_ID ";
+            $sql .= ", ci.hist_seq AS CHNG_HIST_REGIST_HISTORY_ID ";
+            $sql .= ", pay.hist_seq AS EPAYMENTHISTORY_ID ";
+            $sql .= ", pay.credit_corp_kbn AS EPAYCLR_CORP_CD ";
+            $sql .= ", od.del_flg AS DELETE_FLAG ";
+            $sql .= ", (  ";
+                $sql .= "select ";
+                    $sql .= "upd_kbn  ";
+                $sql .= "from ";
+                    $sql .= "f_odr_upd odu  ";
+                $sql .= "where ";
+                    $sql .= "odu.odr_cd = od.odr_seq ";
+            $sql .= ") as CHANGE_KBN ";
+            $sql .= ", (  ";
+                $sql .= "select ";
+                    $sql .= "acpt_dt_tm  ";
+                $sql .= "from ";
+                    $sql .= "f_odr_upd odu  ";
+                $sql .= "where ";
+                    $sql .= "odu.odr_cd = od.odr_seq ";
+            $sql .= ") as CHNG_ORDER_DT ";
+            $sql .= ", (  ";
+                $sql .= "SELECT ";
+                    $sql .= "CONCAT(  ";
+                        $sql .= "credit_card_no ";
+                        $sql .= ", CONCAT(  ";
+                            $sql .= "',' ";
+                            $sql .= ", CONCAT(  ";
+                                $sql .= "credit_card_name ";
+                                $sql .= ", CONCAT(',', CONCAT(avail_term, CONCAT(',', pay_cnt))) ";
+                            $sql .= ") ";
+                        $sql .= ") ";
+                    $sql .= ")  ";
+                $sql .= "from ";
+                    $sql .= "f_odr_upd odu  ";
+                $sql .= "where ";
+                    $sql .= "odu.odr_cd = od.odr_seq ";
+            $sql .= ") as DATA_PAYMENT ";
+            $sql .= ",  ";
+        $sql .= "FROM ";
+            $sql .= "f_odr_h od  ";
+            $sql .= "INNER JOIN m_net_mbr nm  ";
+                $sql .= "ON od.cust_no = nm.cust_no  ";
+            $sql .= "LEFT JOIN m_net_ju_rsn ij  ";
+                $sql .= "ON od.pend_cd = ij.net_ju_cd  ";
+            $sql .= "LEFT JOIN h_approval_card_input ac  ";
+                $sql .= "ON od.odr_seq = ac.odr_no  ";
+            $sql .= "LEFT JOIN h_card_input ci  ";
+                $sql .= "ON od.odr_seq = ci.odr_seq  ";
+            $sql .= "LEFT JOIN h_e_pay_authori pay  ";
+                $sql .= "ON od.odr_seq = pay.odr_no  ";
+        $sql .= "ORDER BY ";
+            $sql .= "od.acpt_dt_tm DESC ";
+    $sql .= ") AS A  ";
+    $sql .= "LEFT JOIN (  ";
+        $sql .= "SELECT ";
+            $sql .= "base.odr_seq ";
+            $sql .= ", coalesce(ad1.cosme_flag, 0) cosme_flag ";
+            $sql .= ", coalesce(ad2.herb_flag, 0) herb_flag  ";
+        $sql .= "FROM ";
+            $sql .= "(  ";
+                $sql .= "SELECT ";
+                    $sql .= "f_odr_d.odr_seq  ";
+                $sql .= "FROM ";
+                    $sql .= "f_odr_d  ";
+                $sql .= "GROUP BY ";
+                    $sql .= "f_odr_d.odr_seq ";
+            $sql .= ") AS base  ";
+            $sql .= "LEFT JOIN (  ";
+                $sql .= "SELECT ";
+                    $sql .= "dd.odr_seq ";
+                    $sql .= ", 1 AS cosme_flag  ";
+                $sql .= "FROM ";
+                    $sql .= "f_odr_d AS dd  ";
+                    $sql .= "INNER JOIN m_item AS mm  ";
+                        $sql .= "ON dd.item_cd = mm.item_cd  ";
+                        $sql .= "AND mm.ope_kbn = '1'  ";
+                $sql .= "GROUP BY ";
+                    $sql .= "dd.odr_seq ";
+            $sql .= ") AS ad1  ";
+                $sql .= "ON base.odr_seq = ad1.odr_seq  ";
+            $sql .= "LEFT JOIN (  ";
+                $sql .= "SELECT ";
+                    $sql .= "dd.odr_seq ";
+                    $sql .= ", 1 AS herb_flag  ";
+                $sql .= "FROM ";
+                    $sql .= "f_odr_d AS dd  ";
+                    $sql .= "inner join m_item AS mm  ";
+                        $sql .= "ON dd.item_cd = mm.item_cd  ";
+                        $sql .= "AND mm.ope_kbn = '2'  ";
+                $sql .= "GROUP BY ";
+                    $sql .= "dd.odr_seq ";
+            $sql .= ") AS ad2  ";
+                $sql .= "ON base.odr_seq = ad2.odr_seq  ";
+        $sql .= "ORDER BY ";
+            $sql .= "base.odr_seq DESC ";
+    $sql .= ") AS B  ";
+        $sql .= "ON A.recv_order_id = B.odr_seq  ";
+
+
+        SELECT 
+    *  
+    FROM 
+    (  
+        SELECT 
+            od.odr_seq AS RECV_ORDER_ID 
+            , od.acpt_dt_tm AS ORDER_DT 
+            , lpad(cast(od.cust_no as varchar), 8, '0') AS KAINNO 
+            , nm.cust_name AS KAIN_NAME 
+            , ij.net_ju_cd AS NET_IJ_CD 
+            , ij.net_ju_rsn AS NET_IJ_INFO 
+            , od.odr_stat_kbn AS ORDER_STATUS 
+            , od.core_sys_kbn AS HOST_FLG 
+            , od.rcv_form_output_kbn AS PRINT_FLG 
+            , ac.odr_kbn AS ORDER_KBN 
+            , (  
+                SELECT 
+                    r.item_kbn  
+                from 
+                    f_odr_d r 
+                    , m_item s 
+                    , m_sys_set sy  
+                where 
+                    sy.site_kbn = '1'  
+                    and r.item_cd = s.item_cd  
+                    and (  
+                        (r.item_lvl is null and s.item_lvl is null)  
+                        or (  
+                            r.item_lvl is not null  
+                            and r.item_lvl = s.item_lvl 
+                        ) 
+                    )  
+                    and r.odr_seq = od.odr_seq LIMIT 1 
+              ) as SHOHIN_TYPE  
+            , (  
+                select 
+                    upd_kbn  
+                from 
+                    f_odr_upd odu  
+                where 
+                    odu.odr_cd = od.odr_seq 
+            ) as CHANGE_KBN 
+            , od.tel_no AS TEL_NO 
+            , (case when od.site_kbn = '1' then nm.mail_adr else nm.mob_mail_adr end) AS EMAIL 
+            , od.mbr_kbn AS KAIN_KBN 
+            , od.net_mbr_cd AS NETMEMBER_ID 
+            , od.site_kbn AS SITE_KBN 
+            , od.gift_flg AS GIFT_FLG 
+            , od.credit_card_no AS CC_NO 
+            , od.avail_term AS CC_TERM 
+            , ac.mbr_cd AS KAIIN_ID 
+            , ac.mbr_pwd AS KAIIN_PASS 
+            , ci.mbr_cd AS CHNG_HIST_KAIIN_ID 
+            , ci.mbr_pwd AS CHNG_HIST_KAIIN_PASS 
+            , pay.trade_cd AS ACCESS_ID 
+            , pay.trade_pwd AS ACCESS_PASS 
+            , pay.order_cd AS ORDER_ID 
+            , pay.e_pay_account_cd AS EPAYMENT_ID 
+            , od.route_dtl_kbn AS ODRROUTEDTLKBN 
+            , ac.hist_seq AS REGIST_HISTORY_ID 
+            , ci.hist_seq AS CHNG_HIST_REGIST_HISTORY_ID 
+            , pay.hist_seq AS EPAYMENTHISTORY_ID 
+            , pay.credit_corp_kbn AS EPAYCLR_CORP_CD 
+            , od.del_flg AS DELETE_FLAG 
+            , (  
+                select 
+                    acpt_dt_tm  
+                from 
+                    f_odr_upd odu  
+                where 
+                    odu.odr_cd = od.odr_seq 
+            ) as CHNG_ORDER_DT 
+            , (  
+                SELECT 
+                    CONCAT(credit_card_no 
+                        , CONCAT(',' 
+                            , CONCAT(credit_card_name 
+                                , CONCAT(',' 
+                                    , CONCAT(avail_term 
+                                        , CONCAT(',', pay_cnt))) 
+                            ) 
+                        ) 
+                    )  
+                from 
+                    f_odr_upd odu  
+                where 
+                    odu.odr_cd = od.odr_seq 
+            ) as DATA_PAYMENT 
+        FROM 
+            f_odr_h od  
+            INNER JOIN m_net_mbr nm  
+                ON od.cust_no = nm.cust_no  
+            LEFT JOIN m_net_ju_rsn ij  
+                ON od.pend_cd = ij.net_ju_cd  
+            LEFT JOIN h_approval_card_input ac  
+                ON od.odr_seq = ac.odr_no  
+            LEFT JOIN h_card_input ci  
+                ON od.odr_seq = ci.odr_seq 
+            LEFT JOIN h_e_pay_authori pay  
+                ON od.odr_seq = pay.odr_no  
+        ORDER BY 
+            od.acpt_dt_tm DESC 
+    ) AS A  
+    LEFT JOIN (  
+        SELECT 
+            base.odr_seq 
+            , coalesce(ad1.cosme_flag, 0) cosme_flag 
+            , coalesce(ad2.herb_flag, 0) herb_flag  
+        FROM 
+            (  
+                SELECT 
+                    f_odr_d.odr_seq  
+                FROM 
+                    f_odr_d  
+                GROUP BY 
+                    f_odr_d.odr_seq 
+            ) AS base  
+            LEFT JOIN (  
+                SELECT 
+                    dd.odr_seq 
+                    , 1 AS cosme_flag  
+                FROM 
+                    f_odr_d AS dd  
+                    INNER JOIN m_item AS mm  
+                        ON dd.item_cd = mm.item_cd  
+                        AND mm.ope_kbn = '1'  
+                GROUP BY 
+                    dd.odr_seq 
+            ) AS ad1  
+                ON base.odr_seq = ad1.odr_seq  
+            LEFT JOIN (  
+                SELECT 
+                    dd.odr_seq 
+                    , 1 AS herb_flag  
+                FROM 
+                    f_odr_d AS dd  
+                    inner join m_item AS mm  
+                        ON dd.item_cd = mm.item_cd  
+                        AND mm.ope_kbn = '2'  
+                GROUP BY 
+                    dd.odr_seq 
+            ) AS ad2  
+                ON base.odr_seq = ad2.odr_seq  
+        ORDER BY 
+            base.odr_seq DESC 
+    ) AS B  
+        ON A.recv_order_id = B.odr_seq  
+ WHERE ( 
+    wher
+    ) 
+ORDER BY 
+    order_dt DESC 

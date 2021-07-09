@@ -249,3 +249,38 @@ SELECT 
     WHERE 
     ACCEPTTIME_ID = 5
 
+INSERT 
+INTO f_mail_recommend_info_h( 
+    mail_recommend_cd
+    , charge_cd
+    , bs_kbn
+    , contact_cd
+    , cust_no
+    , send_dt
+    , send_tm
+    , fixed_flg
+    , sync_flg
+    , del_flg
+    , update_date
+    , register_date
+    , update_user_cd
+    , register_user_cd
+    , cust_name
+) 
+VALUES ( 
+    '$MailOsusumeCD'
+    , '$TantoCD'
+    , '$GyoumuKbn'
+    , '$DraftData[' pid ']'
+    , '$DraftData[' KaiinCD ']'
+    , to_char(CURRENT_TIMESTAMP (0), 'YYYYMMDD')
+    , to_char(CURRENT_TIMESTAMP (0), 'hh24miss')
+    , '$DraftData[' TEIKEIFLG ']'
+    , '0'
+    , '0'
+    , CURRENT_TIMESTAMP (0)
+    , CURRENT_TIMESTAMP (0)
+    , 'TOOL:' || '$TantoCD'
+    , 'TOOL:' || '$TantoCD'
+    , '$DraftData[' mlName ']'
+)
