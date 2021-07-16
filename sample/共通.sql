@@ -2556,3 +2556,271 @@ VALUES (
     , '$update_user'
 )
 
+$sql = "SELECT ";
+  $sql .= "table_name, ";
+  $sql .= "index_name, ";
+  $sql .= "string_agg(column_name, ',') as column_name ";
+$sql .= "FROM ( ";
+       $sql .= "SELECT ";
+         $sql .= "t.relname AS table_name, ";
+         $sql .= "i.relname AS index_name, ";
+         $sql .= "a.attname AS column_name, ";
+         $sql .= "(SELECT i ";
+          $sql .= "FROM (SELECT ";
+                  $sql .= "*, ";
+                  $sql .= "row_number() ";
+                  $sql .= "OVER () i ";
+                $sql .= "FROM unnest(indkey) WITH ORDINALITY AS a(v)) a ";
+          $sql .= "WHERE v = attnum) ";
+       $sql .= "FROM ";
+         $sql .= "pg_class t, ";
+         $sql .= "pg_class i, ";
+         $sql .= "pg_index ix, ";
+         $sql .= "pg_attribute a ";
+       $sql .= "WHERE ";
+         $sql .= "t.oid = ix.indrelid ";
+         $sql .= "AND i.oid = ix.indexrelid ";
+         $sql .= "AND a.attrelid = t.oid ";
+         $sql .= "AND a.attnum = ANY (ix.indkey) ";
+         $sql .= "AND t.relkind = 'r' ";
+         $sql .= "AND t.relname LIKE 'm_user' ";
+       $sql .= "ORDER BY table_name, index_name, i ";
+     $sql .= ") raw ";
+$sql .= "GROUP BY table_name, index_name ";
+
+
+$sql = "SELECT ";
+    $sql .= "A.column_name ";
+    $sql .= ", B.constraint_type  ";
+$sql .= "FROM ";
+    $sql .= "INFORMATION_SCHEMA.KEY_COLUMN_USAGE A ";
+    $sql .= ", INFORMATION_SCHEMA.TABLE_CONSTRAINTS B  ";
+$sql .= "WHERE ";
+    $sql .= "A.constraint_name = B.constraint_name  ";
+    $sql .= "AND A.table_name = '' ";
+
+
+$sql = "SELECT ";
+    $sql .= "column_name ";
+    $sql .= ", data_type ";
+    $sql .= ", character_maximum_length AS data_length ";
+    $sql .= ", is_nullable AS nullable  ";
+$sql .= "from ";
+    $sql .= "information_schema.columns  ";
+$sql .= "where ";
+    $sql .= "table_name = '' ";
+
+
+    SELECT 
+    A.column_name 
+    , B.constraint_type  
+FROM 
+    INFORMATION_SCHEMA.KEY_COLUMN_USAGE A 
+    , INFORMATION_SCHEMA.TABLE_CONSTRAINTS B  
+WHERE 
+    A.constraint_name = B.constraint_name  
+    AND A.table_name = '' 
+
+    SELECT
+    tc.constraint_name
+    , tc.constraint_type
+    , CASE 
+        WHEN (tc.constraint_type = 'CHECK') 
+            THEN cc.check_clause 
+        ELSE cu.column_name 
+        END 
+FROM
+    information_schema.TABLE_CONSTRAINTS tc 
+    LEFT JOIN information_schema.CHECK_CONSTRAINTS cc 
+        ON tc.CONSTRAINT_SCHEMA = cc.CONSTRAINT_SCHEMA 
+        AND tc.CONSTRAINT_NAME = cc.CONSTRAINT_NAME 
+    LEFT JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE cu 
+        ON tc.CONSTRAINT_SCHEMA = cu.CONSTRAINT_SCHEMA 
+        AND tc.CONSTRAINT_NAME = cu.CONSTRAINT_NAME 
+WHERE
+    tc.TABLE_NAME = 'm_user'
+
+
+$sql = "SELECT ";
+    $sql .= "tc.constraint_name ";
+    $sql .= ", tc.constraint_type ";
+    $sql .= ", CASE  ";
+        $sql .= "WHEN (tc.constraint_type = 'CHECK')  ";
+            $sql .= "THEN cc.check_clause  ";
+        $sql .= "ELSE cu.column_name  ";
+        $sql .= "END  ";
+$sql .= "FROM ";
+    $sql .= "information_schema.TABLE_CONSTRAINTS tc  ";
+    $sql .= "LEFT JOIN information_schema.CHECK_CONSTRAINTS cc  ";
+        $sql .= "ON tc.CONSTRAINT_SCHEMA = cc.CONSTRAINT_SCHEMA  ";
+        $sql .= "AND tc.CONSTRAINT_NAME = cc.CONSTRAINT_NAME  ";
+    $sql .= "LEFT JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE cu  ";
+        $sql .= "ON tc.CONSTRAINT_SCHEMA = cu.CONSTRAINT_SCHEMA  ";
+        $sql .= "AND tc.CONSTRAINT_NAME = cu.CONSTRAINT_NAME  ";
+$sql .= "WHERE ";
+    $sql .= "tc.TABLE_NAME = 'm_user' ";
+
+update m_offline_last_odr 
+set
+    odr_stat_kbn = '3' 
+where
+    mbr_seq IN ( 
+        select
+            mbr_seq 
+        from
+            m_offline_data 
+        where
+            cust_no = ''
+    )
+
+$post_sql = "update m_offline_last_odr  ";
+$post_sql .= "set ";
+    $post_sql .= "odr_stat_kbn = '3'  ";
+$post_sql .= "where ";
+    $post_sql .= "mbr_seq IN (  ";
+        $post_sql .= "select ";
+            $post_sql .= "mbr_seq  ";
+        $post_sql .= "from ";
+            $post_sql .= "m_offline_data  ";
+        $post_sql .= "where ";
+            $post_sql .= "cust_no = '' ";
+    $post_sql .= ") ";
+
+$post_sql = "update m_offline_last_odr set odr_stat_kbn='3' where mbr_seq IN (select mbr_seq from m_offline_data where cust_no='') ";
+
+$post_sql = "update m_offline_data set buy_cnt='1' where cust_no='' ";
+
+$post_sql = "update m_offline_data set accumulation_point=50 where cust_no= '' ";
+
+
+$sql .= "SELECT ";
+    $sql .= "i.relname as index_name ";
+    $sql .= ", CASE  ";
+        $sql .= "WHEN p.contype = 'u'  ";
+            $sql .= "THEN 'UNIQUE'  ";
+        $sql .= "WHEN p.contype = 'p'  ";
+            $sql .= "THEN 'UNIQUE'  ";
+        $sql .= "ELSE 'NONUNIQUE'  ";
+        $sql .= "END AS uniqueness ";
+    $sql .= ", f.attname AS column_name  ";
+$sql .= "FROM ";
+    $sql .= "pg_attribute f JOIN pg_class c  ";
+        $sql .= "ON c.oid = f.attrelid JOIN pg_type t  ";
+        $sql .= "ON t.oid = f.atttypid  ";
+    $sql .= "LEFT JOIN pg_attrdef d  ";
+        $sql .= "ON d.adrelid = c.oid  ";
+        $sql .= "AND d.adnum = f.attnum  ";
+    $sql .= "LEFT JOIN pg_namespace n  ";
+        $sql .= "ON n.oid = c.relnamespace  ";
+    $sql .= "LEFT JOIN pg_constraint p  ";
+        $sql .= "ON p.conrelid = c.oid  ";
+        $sql .= "AND f.attnum = ANY (p.conkey)  ";
+    $sql .= "LEFT JOIN pg_class AS g  ";
+        $sql .= "ON p.confrelid = g.oid  ";
+    $sql .= "LEFT JOIN pg_index AS ix  ";
+        $sql .= "ON f.attnum = ANY (ix.indkey)  ";
+        $sql .= "and c.oid = f.attrelid  ";
+        $sql .= "and c.oid = ix.indrelid  ";
+    $sql .= "LEFT JOIN pg_class AS i  ";
+        $sql .= "ON ix.indexrelid = i.oid  ";
+$sql .= "WHERE ";
+    $sql .= "c.relkind = 'r' ::char  ";
+    $sql .= "AND n.nspname = current_schema()  ";
+    $sql .= "AND c.relname = '$selected_table'  ";
+    $sql .= "AND f.attnum > 0  ";
+    $sql .= "AND i.oid <> 0  ";
+$sql .= "ORDER BY ";
+    $sql .= "i.relname ";
+
+
+
+
+SELECT 
+ for ($i=0;$i<count($arr_clum_list);$i++) {
+  $cl_name = explode("\.",$arr_clum_list[$i]);
+  $date_flg = false;
+  if ($cl_name[1] == "UPDATE_DT"
+   || $cl_name[1] == "REGIST_DT"
+   || $cl_name[1] == "POINT_YMD"
+   || $cl_name[1] == "LAST_ORDER_RECV_DT"
+   || $cl_name[1] == "LAST_ORDER_DELIVERY_DT"
+   || $cl_name[1] == "LAST_DELIVERY_FINISHED_DT"
+   || $cl_name[1] == "SHIP_DT"
+   || $cl_name[1] == "H_DLV_END_DT"
+   || $cl_name[1] == "LAST_LOGIN_DT") {
+   $date_flg = true;
+  }
+  if ($date_flg)  {
+   $sql .= $constr."TO_CHAR(".$arr_clum_list[$i].",'YYYYMMDDHH24MISS') AS ".$cl_name[1];
+  } else {
+   $sql .= $constr.$arr_clum_list[$i]." AS ".$cl_name[1];
+  }
+  $constr = ",";
+ }
+FROM MEMBER_TBL,WEBPROFILE_TBL
+WHERE MEMBER_TBL.MEMBER_ID = WEBPROFILE_TBL.MEMBER_ID(+)
+AND MEMBER_TBL.NETMEMBER_ID = :nmid 
+
+
+$sql  = "SELECT ";
+	
+	$sql .= " FROM MEMBER_TBL,WEBPROFILE_TBL";
+	$sql .= " WHERE MEMBER_TBL.MEMBER_ID = WEBPROFILE_TBL.MEMBER_ID(+)";
+	$sql .= " AND MEMBER_TBL.NETMEMBER_ID = :nmid ";
+
+    $member_data_arr = array('m_offline_data.era_kbn', 'm_offline_data.birthday', 'm_offline_data.pref_cd', 'm_offline_data.sex_kbn',
+							 'm_offline_data.last_buy_dt_1', 'm_offline_data.last_buy_dt_2', 'm_offline_data.last_buy_dt_3',
+							 'm_offline_data.last_buy_dt_2', 'm_offline_data.first_buy_dt_1','m_offline_data.first_buy_dt_2',
+							 'm_offline_data.first_buy_dt_3', 'm_offline_data.first_buy_dt_4', 'm_offline_data.buy_cnt' );
+
+
+SELECT
+era_kbn,
+birthday,
+pref_cd,
+sex_kbn,
+last_buy_dt_1,
+last_buy_dt_2,
+last_buy_dt_3,
+last_buy_dt_4,
+first_buy_dt_1,
+first_buy_dt_2,
+first_buy_dt_3,
+first_buy_dt_4,
+buy_cnt
+FROM m_net_mbr mbr
+LEFT JOIN m_offline_data wp
+ON mbr.MEMBER_ID = wp.MEMBER_ID
+AND mbr.net_mbr_cd = :nmid 
+
+$sql = "SELECT ";
+$sql .= "era_kbn, ";
+$sql .= "birthday, ";
+$sql .= "pref_cd, ";
+$sql .= "sex_kbn, ";
+$sql .= "last_buy_dt_1, ";
+$sql .= "last_buy_dt_2, ";
+$sql .= "last_buy_dt_3, ";
+$sql .= "last_buy_dt_4, ";
+$sql .= "first_buy_dt_1, ";
+$sql .= "first_buy_dt_2, ";
+$sql .= "first_buy_dt_3, ";
+$sql .= "first_buy_dt_4, ";
+$sql .= "buy_cnt, ";
+$sql .= "FROM m_net_mbr mbr ";
+$sql .= "LEFT JOIN m_offline_data wp ";
+$sql .= "ON mbr.mbr_seq = wp.mbr_seq ";
+$sql .= "AND mbr.net_mbr_cd = :nmid  ";
+
+
+'20364500',
+'20364499',
+'20364496',
+'20364492',
+'20364487',
+'20364476',
+'20364470',
+'20364463',
+'20364451',
+'20364448'
+
