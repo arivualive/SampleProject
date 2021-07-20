@@ -1,0 +1,60 @@
+{
+    "$testJsonData": {
+        "A240": {
+            "CustNo": ".$send_Data[kainno].",
+            "CosmeMailFlg": "",
+            "CosmeOptInFlg": "",
+            "LastUpdCosmeOptInDt": "",
+            "HerbMailFlg": "",
+            "HerbOptInFlg": "",
+            "LastUpdHerbOptInDt": "",
+            "LetterDMLessFlg": "",
+            "LetterDMLessRsnKbn": "",
+            "DmIndivActFlg": ""
+        },
+        "A900": {
+            "CustNo": ".$send_Data[kainno].",
+            "TelNo": "",
+            "MbrNo": "",
+            "InputExistNonKbn": "",
+            "ErrCd": "",
+            "CustNameKana": "",
+            "CustName": ""
+        },
+        "A910": {
+            "CustNo": ".$send_Data[kainno].",
+            "TelNo": "",
+            "MbrNo": "",
+            "Pwd": "",
+            "MailAdr": "",
+            "MobileAdr": ""
+        },
+        "A920": {
+            "CustNo": ".$send_Data[kainno].",
+            "TelNo": "",
+            "MbrId": "",
+            "Pwd": "",
+            "PcMailAdr": "",
+            "MobileMailAdr": "",
+            "MbrIdOld": "",
+            "PwdOld": "",
+            "PcMailAdrOld": "",
+            "MobileMailAdrOld": "",
+            "InfoUpdFlg": "",
+            "PcMailNoticeFlg": "",
+            "PcDmMaillessFlg": "",
+            "PcMailNoticeFlgOld": "",
+            "PcDmMaillessFlgOld": "",
+            "MobileMailNoticeFlg": "",
+            "MobileDmMaillessFlg": "",
+            "MobileMailNoticeFlgOld": "",
+            "MobileDmMaillessFlgOld": "",
+            "MailFormFlg": "",
+            "DeliveryErrorFlg": "",
+            "MobileDeliveryErrorFlg": "",
+            "MailFormFlgOld": "",
+            "DeliveryErrorFlgOld": "",
+            "MobileDeliveryErrorFlgOld": ""
+        }
+    }
+}
