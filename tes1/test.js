@@ -42,3 +42,20 @@ function isNgWord(str){
 	}
 	return illegal_str;
 }
+
+
+regex = "([\x{8140}-\x{84BE}]|[\x{8740}-\x{879C}]|[\x{889F}-\x{9872}]|[\x{989F}-\x{EAA4}]|[\x{ED40}-\x{EEFC}]|[\x{FA40}-\x{FC4B}])
+/[\x{8140}-\x{84BE}]|[\u3040-\u309F]|[\u30A0-\u30FF]|[\uFF00-\uFFEF]|[\u4E00-\u9FAF]|[\u2605-\u2606]|[\u2190-\u2195]|\u203B/g
+
+    
+					
+function muFunction() {
+    var str = "本日は晴天なり";
+    var conv = Utilities.newBlob("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz*-.@_").getBytes().map(function(e) {return ("0" + (e & 0xFF).toString(16)).slice(-2)});
+    var bytes = Utilities.newBlob("").setDataFromString(str, "Shift_JIS").getBytes();
+    var res = bytes.map(function(byte) {
+      var n = ("0" + (byte & 0xFF).toString(16)).slice(-2);
+      return conv.indexOf(n) != -1 ? String.fromCharCode(parseInt(n[0], 16).toString(2).length == 4 ? parseInt(n, 16) - 256 : parseInt(n, 16)) : ("%" + n).toUpperCase();
+    }).join("");
+    Logger.log(res)
+  }

@@ -1,0 +1,11 @@
+var header='<center><table width="724" border="0" cellspacing="0" cellpadding="0"><tr align="right"><td><img src="./img/logo.gif" width="124" height="24"></td></tr></table><table width="724" border="0" cellspacing="0" cellpadding="0"><tr><td colspan="3" bgcolor="#B75360"><img src="../img/menu/spacer.gif" width="2" height="2"></td></tr><tr><td rowspan="3" width="2" bgcolor="#B75360"><img src="./img/spacer.gif" width="2"></td><td background="../img/menu/head_bg.jpg"><img src="../img/menu/spacer.gif" width="720" height="18"></td><td rowspan="3" width="2" bgcolor="#B75360"><img src="./img/spacer.gif" width="2"></td></tr><tr><td colspan="2" align="center"><img src="./img/spacer.gif" width="1" height="8"><br><table width="680" border="0" cellspacing="0" cellpadding="0"><tr><td width="1" height="12"></td></tr><tr><td>';
+var footer='</td></tr><tr><td colspan="2"><img src="./img/spacer.gif" width="1" height="4"><br><table width="680" border="0" cellspacing="0" cellpadding="0"><tr align="center"><td><img src="./img/spacer.gif" width="1" height="16"><br><img src="./img/line.gif" width="680" height="1"><br><Script Language="JavaScript">var CRYear = new Date(); document.write("<div class=\'sText\'>Copyright (c)2001-" + CRYear.getFullYear() + " Saishunkan Co.Ltd., All Rights Reserved.</div>");</Script><img src="./img/spacer.gif" width="1" height="8"><br></td></tr></table></td></tr></table></td></tr><tr><td colspan="4" height="2" bgcolor="#B75360"><img src="./img/spacer.gif" width="1" height="2"></td> </tr></table>';
+
+function columnHd(num) {
+	document.write('<table width="' + num + '" border="0" cellspacing="0" cellpadding="0"><tr><td colspan="5" height="1" bgcolor="#B75360"><img src="./img/spacer.gif" height="1"></td></tr><tr align="top"><td width="1" bgcolor="#B75360"><img src="./img/spacer.gif" width="1"></td><td width="19"></td><td width="' + (num - 40) + '"><img src="./img/spacer.gif" width="1" height="8"><br>');
+	}
+
+function columnFd() {
+	document.write('<br><img src="./img/spacer.gif" width="1" height="4"></td><td width="19"></td><td width="1" bgcolor="#B75360"><img src="./img/spacer.gif" width="1"></td></tr><tr><td colspan="5" height="1" bgcolor="#B75360"><img src="./img/spacer.gif" height="1"></td></tr></table>');
+	}
+

@@ -2824,3 +2824,43 @@ $sql .= "AND mbr.net_mbr_cd = :nmid  ";
 '20364451',
 '20364448'
 
+    SELECT * FROM ( 
+    SELECT ROW_NUMBER() OVER () AS ID,A.* FROM 
+    (SELECT 
+       f_odr_h.odr_seq                                       AS RECV_ORDER_ID, 
+       f_odr_h.cust_no                                       AS KAINNO, 
+       m_net_mbr.cust_name                                 AS KAIN_NAME, 
+       f_odr_h.tel_no                                        AS TEL_NO, 
+       m_net_mbr.mob_mail_adr                              AS M_EMAIL, 
+       m_net_mbr.mail_adr                                  AS EMAIL, 
+       core_sys_kbn                                        AS HOST_FLG, 
+       rcv_form_output_kbn                                 AS PRINT_FLG, 
+       odr_stat_kbn                                        AS ORDER_STATUS, 
+       stat_kbn                                            AS STATUS, 
+       responder                                           AS Communicator, 
+       thank_mail_ctrl_no                                  AS CTRL_NO, 
+       user_name                                          AS COMM_NM, 
+      to_char(dlv_req_dt,'YYYY/MM/DD')                    AS DELIVERY_DT,
+      dlv_tm_kbn                                          AS DELIVERY_TIME_TYPE, 
+      to_char(thank_mail_send_dt,'YYYY/MM/DD HH24:MI:SS') AS RETURN_DT,
+      to_char(f_odr_h.acpt_dt_tm,'YYYY/MM/DD HH24:MI:SS')   AS ORDER_DT, 
+      site_kbn AS SITE_KBN 
+     ,mail_fixed_kbn                                      AS MAILTEIKEI_FLG
+    ,cvs_rcv_site_odr_no AS EconOrder_ID
+    ,barcd AS ECONBARCODE
+     ,f_odr_h.route_dtl_kbn AS ODRROUTEDTLKBN 
+     FROM 
+      f_odr_h 
+      LEFT JOIN 
+      m_user 
+      ON responder = ctrl_scr_login_cd , 
+      m_net_mbr 
+     WHERE 
+     f_odr_h.del_flg <> '1' AND m_net_mbr.del_flg <> '1' 
+     AND ( 
+     (cvs_rcv_site_odr_no IS NULL OR cvs_rcv_site_odr_no='') 
+     or ((cvs_rcv_site_odr_no is not null OR cvs_rcv_site_odr_no<>'') AND (barcd is null OR barcd = ''))
+     ) 
+     AND f_odr_h.cust_no = m_net_mbr.cust_no 
+     AND f_odr_h.odr_seq NOT IN (SELECT odr_seq FROM f_odr_direct) 
+
