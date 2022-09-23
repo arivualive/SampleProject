@@ -1,0 +1,267 @@
+function onOpen()
+{
+  var menu = [{name: "ComparisonData", functionName: "ComparisonData"}, {name: "Result", functionName: "Result"}]
+  SpreadsheetApp.getActiveSpreadsheet().addMenu("Compare", menu)
+}
+
+function ComparisonData()
+{
+  var ss = SpreadsheetApp.getActiveSpreadsheet()
+  var shBs = ss.getSheetByName("BsTable")
+  var shPl = ss.getSheetByName("PlTable")
+  var shComparisonData = ss.getSheetByName("ComparisonData")
+
+  var lastRow = shComparisonData.getLastRow()
+  if (lastRow > 3)
+  {
+    shComparisonData.getRange("A4:G" + lastRow).clear()
+    shComparisonData.getRange("J4:Q" + lastRow).clear()
+  }
+
+  var values = []
+
+  lastRow = shBs.getLastRow()
+
+  for (var rIndex = 2; rIndex <= lastRow; rIndex++)
+  {
+    var code = shBs.getRange("A" + rIndex).getValue()
+    if (code == "")
+      continue
+    
+    var columns = []
+
+    columns.push(code)
+    columns.push(shBs.getRange("B" + rIndex).getValue())
+    columns.push(shBs.getRange("C" + rIndex).getValue())
+    columns.push(shBs.getRange("D" + rIndex).getValue())
+    columns.push(shBs.getRange("E" + rIndex).getValue())
+    columns.push(shBs.getRange("F" + rIndex).getValue())
+    columns.push(shBs.getRange("G" + rIndex).getValue())
+    values.push(columns)
+  }
+
+  for (var rIndex = 2; rIndex <= lastRow; rIndex++)
+  {
+    var code = shBs.getRange("H" + rIndex).getValue()
+    if (code == "")
+      continue
+    
+    var columns = []
+
+    columns.push(code)
+    columns.push(shBs.getRange("I" + rIndex).getValue())
+    columns.push(shBs.getRange("J" + rIndex).getValue())
+    columns.push(shBs.getRange("K" + rIndex).getValue())
+    columns.push(shBs.getRange("L" + rIndex).getValue())
+    columns.push(shBs.getRange("M" + rIndex).getValue())
+    columns.push(shBs.getRange("N" + rIndex).getValue())
+    values.push(columns)
+  }
+
+  shComparisonData.getRange("A4:G" + (values.length + 3).toString()).setValues(values)
+
+  lastRow = shPl.getLastRow()
+
+  var newCodes = []
+  var codes = {}
+  var d0 = {}
+  var d1 = {}
+  var d2 = {}
+  var d3 = {}
+  var d4 = {}
+  var d5 = {}
+
+  for (var rIndex = 2; rIndex <= lastRow; rIndex++)
+  {
+    var code = shPl.getRange("A" + rIndex).getValue()
+    if (code == "")
+      continue
+      
+    var codeName = shPl.getRange("B" + rIndex).getValue()
+    var parts = codeName.toString().split(" ")
+    var newCode = parts[0].substring(0, 5)
+
+    if (isNaN(newCode) == true)
+      newCode = code
+
+    if (newCodes.indexOf(newCode) < 0)
+      newCodes.push(newCode)
+    
+    codes[newCode] = code
+  }
+  
+  for (var codeIndex = 0; codeIndex < newCodes.length; codeIndex++)
+  {
+    var newCode = newCodes[codeIndex]
+    
+    d0[newCode] = []
+    d1[newCode] = []
+    d2[newCode] = []
+    d3[newCode] = []
+    d4[newCode] = []
+    d5[newCode] = []
+  }
+
+  for (var rIndex = 2; rIndex <= lastRow; rIndex++)
+  {
+    var code = shPl.getRange("A" + rIndex).getValue()
+    if (code == "")
+      continue
+      
+    var codeName = shPl.getRange("B" + rIndex).getValue()
+    var parts = codeName.toString().split(" ")
+    var newCode = parts[0].substring(0, 5)
+
+    if (isNaN(newCode) == true)
+      newCode = code
+
+    codeName = parts[0]
+    if (parts.length > 1)
+      codeName = parts[1]
+    
+    d0[newCode].push(codeName)
+    d1[newCode].push(shPl.getRange("C" + rIndex).getValue())
+    d2[newCode].push(shPl.getRange("D" + rIndex).getValue())
+    d3[newCode].push(shPl.getRange("E" + rIndex).getValue())
+    d4[newCode].push(shPl.getRange("F" + rIndex).getValue())
+    d5[newCode].push(shPl.getRange("G" + rIndex).getValue())
+  }
+
+  var values = []
+
+  for (var codeIndex = 0; codeIndex < newCodes.length; codeIndex++)
+  {
+    var newCode = newCodes[codeIndex]
+    
+    var columns = []
+
+    columns.push(codes[newCode])
+    columns.push(newCode)
+
+    columns.push(d0[newCode].join(","))
+    columns.push(d1[newCode].reduce(function(a, b){return a + b}, 0))
+    columns.push(d2[newCode].reduce(function(a, b){return a + b}, 0))
+    columns.push(d3[newCode].reduce(function(a, b){return a + b}, 0))
+    columns.push(d4[newCode].reduce(function(a, b){return a + b}, 0))
+    columns.push(d5[newCode].reduce(function(a, b){return a + b}, 0))
+
+    values.push(columns)
+  }
+
+  shComparisonData.getRange("J4:Q" + (values.length + 3).toString()).setValues(values)
+
+  Browser.msgBox("Complete")
+}
+
+function Result()
+{
+  var ss = SpreadsheetApp.getActiveSpreadsheet()
+  var shComparisonData = ss.getSheetByName("ComparisonData")
+  var shResult = ss.getSheetByName("Result")
+
+  var lastRow = shResult.getLastRow()
+  if (lastRow > 3)
+    shResult.getRange("A4:K" + lastRow).clear()
+
+  var dBs = {}
+  var dPl = {}
+  var codes = []
+
+  var lastRow = shComparisonData.getLastRow()
+
+  for (var rIndex = 4; rIndex <= lastRow; rIndex++)
+  {
+    var code = shComparisonData.getRange("A" + rIndex).getValue()
+    if (code == "")
+      continue
+    
+    var columns = []
+
+    columns.push(shComparisonData.getRange("C" + rIndex).getValue())
+    columns.push(shComparisonData.getRange("D" + rIndex).getValue())
+    columns.push(shComparisonData.getRange("E" + rIndex).getValue())
+    columns.push(shComparisonData.getRange("F" + rIndex).getValue())
+    columns.push(shComparisonData.getRange("G" + rIndex).getValue())
+    
+    dBs[code] = columns
+
+    if (codes.indexOf(code) < 0)
+      codes.push(code)
+  }
+
+  for (var rIndex = 4; rIndex <= lastRow; rIndex++)
+  {
+    var code = shComparisonData.getRange("K" + rIndex).getValue()
+    if (code == "")
+      continue
+    
+    var columns = []
+
+    columns.push(shComparisonData.getRange("M" + rIndex).getValue())
+    columns.push(shComparisonData.getRange("N" + rIndex).getValue())
+    columns.push(shComparisonData.getRange("O" + rIndex).getValue())
+    columns.push(shComparisonData.getRange("P" + rIndex).getValue())
+    columns.push(shComparisonData.getRange("Q" + rIndex).getValue())
+    
+    dPl[code] = columns
+
+    if (codes.indexOf(code) < 0)
+      codes.push(code)
+  }
+
+  var values = []
+
+  for (var codeIndex = 0; codeIndex < codes.length; codeIndex++)
+  {
+    var code = codes[codeIndex]
+
+    var mismatch = false
+
+    var columns1 = dBs[code]
+    if (columns1 == null)
+    {
+      columns1 = ["", "", "", "", ""]
+      mismatch = true
+    }
+
+    var columns2 = dPl[code]
+    if (columns2 == null)
+    {
+      columns2 = ["", "", "", "", ""]
+      mismatch = true
+    }
+
+    var columns = []
+    columns.push(code)
+    columns.push(columns1[0])
+    columns.push(columns2[0])
+    columns.push(columns1[1])
+    columns.push(columns2[1])
+    columns.push(columns1[2])
+    columns.push(columns2[2])
+    columns.push(columns1[3])
+    columns.push(columns2[3])
+    columns.push(columns1[4])
+    columns.push(columns2[4])
+
+    values.push(columns)
+
+    var row = (codeIndex + 4).toString()
+    var range = `B${row}:K${row}`
+    
+    if (mismatch == true)
+      shResult.getRange(range).setBackgroundRGB(255, 255, 0)
+    else
+      {
+        for (var cIndex = 0; cIndex < columns1.length; cIndex++)
+        {
+          if (columns1[cIndex] != columns2[cIndex])
+            shResult.getRange(row, 2 * (cIndex + 1), 1, 2).setBackgroundRGB(255, 0, 0)
+        }
+      }
+  }
+
+  shResult.getRange("A4:K" + (values.length + 3).toString()).setValues(values)
+
+  Browser.msgBox("Complete")
+}
