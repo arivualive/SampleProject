@@ -1,0 +1,59 @@
+function AmountSum() {
+
+var CodeMaster = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("CodeMaster")
+var ProTable = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ProTable")
+var SapTable = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("SapTable")
+var ComparisonData = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ComparisonData")
+var noProTable = ProTable.getLastRow()
+var noCodeMaster = CodeMaster.getLastRow()
+var noSapTable = SapTable.getLastRow()
+var codee
+var codeb
+var accu
+var namee
+var amount
+var x = 4
+for (var a = 2 ; a <= noProTable ; a++){
+accu = 0
+codee = ProTable.getRange(a,1).getValue()
+namee = ProTable.getRange(a,2).getValue()
+amount = ProTable.getRange(a,3).getValue()
+if (codee.toString().length == 4 ){
+for (var b = 2 ; b <= noCodeMaster ; b++){
+if (codee == CodeMaster.getRange(b,2).getValue() ){
+codeb = CodeMaster.getRange(b,1).getValue()
+for (var b0 = 2 ; b0 <= noSapTable ; b0++){
+if (codeb == SapTable.getRange(b0,1).getValue() ){
+if(!isNaN(parseFloat(SapTable.getRange(b0,3).getValue())) && isFinite(SapTable.getRange(b0,3).getValue())){
+accu =  accu +  SapTable.getRange(b0,3).getValue()
+}}}}}
+ComparisonData.getRange(x,1).setValue(codee)
+ComparisonData.getRange(x,2).setValue(namee)
+ComparisonData.getRange(x,3).setValue(amount)
+ComparisonData.getRange(x,6).setValue(codee)
+ComparisonData.getRange(x,7).setValue(accu)
+x = x + 1
+}}
+for (var a = 2 ; a <= noProTable ; a++){
+accu = 0
+codee = ProTable.getRange(a,4).getValue()
+namee = ProTable.getRange(a,5).getValue()
+amount = ProTable.getRange(a,6).getValue()
+if (codee.toString().length == 4 ){
+for (var b = 2 ; b <= noCodeMaster ; b++){
+if (codee == CodeMaster.getRange(b,2).getValue() ){
+codeb = CodeMaster.getRange(b,1).getValue()
+for (var b0 = 2 ; b0 <= noSapTable ; b0++){
+if (codeb == SapTable.getRange(b0,1).getValue() ){
+if(!isNaN(parseFloat(SapTable.getRange(b0,3).getValue())) && isFinite(SapTable.getRange(b0,3).getValue())){
+accu =  accu +  SapTable.getRange(b0,3).getValue()
+}}}}}
+ComparisonData.getRange(x,1).setValue(codee)
+ComparisonData.getRange(x,2).setValue(namee)
+ComparisonData.getRange(x,3).setValue(amount)
+ComparisonData.getRange(x,6).setValue(codee)
+ComparisonData.getRange(x,7).setValue(accu)
+x = x + 1
+}}
+
+};
