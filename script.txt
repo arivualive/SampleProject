@@ -1,0 +1,131 @@
+function onOpen()
+{
+  var menu = [{name: "Result", functionName: "Result"}]
+  SpreadsheetApp.getActiveSpreadsheet().addMenu("Compare", menu)
+}
+
+function Result()
+{
+  var ss = SpreadsheetApp.getActiveSpreadsheet()
+  var shCodeMaster = ss.getSheetByName("CodeMaster")
+  var shComparisonData = ss.getSheetByName("ComparisonData")
+  var shResult = ss.getSheetByName("ResultData")
+
+  var lastRow = shResult.getLastRow()
+  if (lastRow > 3)
+    shResult.getRange("A4:C" + lastRow).clear()
+  
+  var dCodes = {}
+
+  var lastRow = shCodeMaster.getLastRow()
+
+  for (var rIndex = 2; rIndex <= lastRow; rIndex++)
+  {
+    var codeB = shCodeMaster.getRange(rIndex, 1, 1, 1).getValue()
+    var codeA = shCodeMaster.getRange(rIndex, 2, 1, 1).getValue()
+
+    if (dCodes[codeB] == null)
+      dCodes[codeB] = []
+    
+    dCodes[codeB].push(codeA)
+  }
+
+  var dBs = {}
+  var dPl = {}
+  var codes = []
+
+  var lastRow = shComparisonData.getLastRow()
+
+  for (var rIndex = 4; rIndex <= lastRow; rIndex++)
+  {
+    var code = shComparisonData.getRange("A" + rIndex).getValue()
+    if (code == "")
+      continue
+    
+    var columns = []
+
+    columns.push(shComparisonData.getRange("C" + rIndex).getValue())
+    
+    dBs[code] = columns
+
+    if (codes.indexOf(code) < 0)
+      codes.push(code)
+  }
+
+  for (var rIndex = 4; rIndex <= lastRow; rIndex++)
+  {
+    var code = shComparisonData.getRange("F" + rIndex).getValue()
+    if (code == "")
+      continue
+    
+    var codeAs = dCodes[code]
+    if (codeAs == null)
+      continue
+    
+    for (var codeIndex = 0; codeIndex < codeAs.length; codeIndex++)
+    {
+      var codeA = codeAs[codeIndex]
+      var columns = []
+      if (dPl[codeA] == null)
+        dPl[codeA] = []
+      
+      dPl[codeA].push(shComparisonData.getRange("G" + rIndex).getValue())
+
+      if (codes.indexOf(codeA) < 0)
+        codes.push(codeA)
+    }
+  }
+
+  var values = []
+
+  for (var codeIndex = 0; codeIndex < codes.length; codeIndex++)
+  {
+    var code = codes[codeIndex]
+
+    var mismatch = false
+
+    var columns1 = dBs[code]
+    if (columns1 == null)
+    {
+      columns1 = [""]
+      mismatch = true
+    }
+
+    var columns2 = dPl[code]
+    if (columns2 == null)
+    {
+      columns2 = [""]
+      mismatch = true
+    }
+
+    var columns = []
+    columns.push(code)
+
+    var sumA = columns1.reduce(function(a, b){return a + b}, 0)
+    if (sumA == 0)
+      sumA = ""
+    columns.push(sumA)
+
+    var sumB = columns2.reduce(function(a, b){return a + b}, 0)
+    if (sumB == 0)
+      sumB = ""
+    columns.push(sumB)
+
+    values.push(columns)
+
+    var row = (codeIndex + 4)
+    var range = `B${row}:C${row}`
+    
+    if (mismatch == true)
+      shResult.getRange(range).setBackgroundRGB(255, 255, 0)
+    else
+    {
+      if (columns[1] != columns[2])
+        shResult.getRange(range).setBackgroundRGB(255, 0, 0)
+    }
+  }
+
+  shResult.getRange("A4:C" + (values.length + 3).toString()).setValues(values)
+
+  Browser.msgBox("Complete")
+}
